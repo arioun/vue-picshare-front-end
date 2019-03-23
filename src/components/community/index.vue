@@ -10,7 +10,7 @@
             <el-button type="text" @click="show('guanzhu')">关注</el-button>
           </el-col>
           <el-col :span="2" :offset="5" :class="['communitybtn',flag3?'com-btn-act':'']">
-            <el-button type="text" @click="show('shequ')">我的社区</el-button>
+            <el-button type="text" @click="show('myshequ')">我的社区</el-button>
           </el-col>
         </el-row>
       </el-header>
@@ -24,14 +24,14 @@
 <script>
 import tuijian from "./tuijian.vue";
 import guanzhu from "./guanzhu.vue";
-import shequ from "./myshequ.vue";
+import myshequ from "./myshequ.vue";
 
 export default {
   name: "community",
   components: {
     tuijian,
     guanzhu,
-    shequ
+    myshequ
   },
   data() {
     return {
@@ -71,7 +71,7 @@ export default {
       this.flag2=true,
       this.flag3=false
     }
-    else if(this.comName == "shequ"){
+    else if(this.comName == "myshequ"){
       this.flag1=false,
       this.flag2=false,
       this.flag3=true

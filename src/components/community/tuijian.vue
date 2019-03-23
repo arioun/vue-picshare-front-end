@@ -413,7 +413,13 @@
 </template>
 <script>
 export default {
-  name: "tuijian"
+  name: "tuijian",
+  data() {
+    return {
+      txurl:'',
+      
+    }
+  },
 };
 </script> 
 <style>
@@ -438,7 +444,6 @@ export default {
 }
 .tj-card-head {
   margin-top: 4%;
-  margin-left: auto;
   margin-right: 5%;
 }
 .tj-card-head-name {
