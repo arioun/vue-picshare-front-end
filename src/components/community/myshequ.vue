@@ -11,8 +11,16 @@
               <li class="sq-name" v-text="username"></li>
               <li>
                 <ul class="sq-ul3">
-                  <li><el-button type="text" @click="show('focus')">关注&nbsp;{{focus}}</el-button></li>
-                  <li><el-button type="text" @click="show('follows')">粉丝&nbsp;{{follows}}</el-button></li>
+                  <li>
+                    <router-link to='/community/mycommunity/focus'>
+                    <el-button type="text" @click="show('focus')">关注&nbsp;{{focus}}</el-button>
+                  </router-link>
+                    </li>
+                  <li>
+                    <router-link to='/community/mycommunity/follows'>
+                    <el-button type="text" @click="show('follows')">粉丝&nbsp;{{follows}}</el-button>
+                    </router-link>
+                    </li>
                 </ul>
               </li>
               <li class="sq-intr" v-text="introduction"></li>
@@ -28,13 +36,19 @@
       <el-header>
         <el-row type="flex" justify="center" class="sq-head">
           <el-col :span="2" :offset="6" :class="['sq-btn',flag1?'sq-btn-act':'']">
-            <el-button type="text" @click="show('mywork')">我的作品</el-button>
+            <router-link to="/community/mycommunity/mywork">
+              <el-button type="text" @click="show('mywork')">我的作品</el-button>
+            </router-link>
           </el-col>
           <el-col :span="2" :offset="2" :class="['sq-btn',flag2?'sq-btn-act':'']">
+            <router-link to="/community/mycommunity/mylike">
             <el-button type="text" @click="show('like')">喜欢</el-button>
+            </router-link>
           </el-col>
           <el-col :span="2" :offset="2" :class="['sq-btn',flag3?'sq-btn-act':'']">
+            <router-link to="/community/mycommunity/myalbum">
             <el-button type="text" @click="show('album')">相册</el-button>
+            </router-link>
           </el-col>
           <el-col :span="2" :offset="6">
             <el-button size="mini" class="mysq-btn-al" @click="newalbum = true">新建相册</el-button>
@@ -60,7 +74,7 @@
         </el-dialog>
       </el-header>
       <el-main class="mysq-main">
-        <component :is="comName"></component>
+        <router-view></router-view>
       </el-main>
     </el-container>
   </div>

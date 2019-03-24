@@ -8,19 +8,19 @@
       </el-col>
       <el-col :lg="0" :xs="8" :sm="4" :md="4" :xl="1">&nbsp;</el-col>
       <el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1" :class="['hel-col',flag1?'active-tk':'']">
-        <router-link to="gallery" >
+        <router-link to="/gallery" >
           <el-button type="text" class="hbtn" @click="show('/gallery')">图库</el-button>
         </router-link>
       </el-col>
       <el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1">&nbsp;</el-col>
       <el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1" :class="['hel-col',flag2?'active-sq':'']">
-        <router-link to="community">
+        <router-link to="/community">
           <el-button type="text" class="hbtn" @click="show('/community')">社区</el-button>
         </router-link>
       </el-col>
       <el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1">&nbsp;</el-col>
       <el-col :lg="2" :xs="2" :sm="2" :md="2" :xl="2" :class="['hel-col',flag3?'active-fb':'']">
-        <router-link to="publish">
+        <router-link to="/publish">
           <el-button type="text" class="hbtn" @click="show('/publish')">发布作品</el-button>
         </router-link>
       </el-col>
@@ -35,7 +35,7 @@
         <el-button type="text" class="hbtn">注册</el-button>
       </el-col>
       <el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1" class="hbtn2 hel-col">
-        <router-link to='notice'>
+        <router-link to='/notice'>
           <div  :class="['huser',flag4?'h-message-btn-open':'h-message-btn-close']" @click="show('/notice')">
           </div>
         </router-link>

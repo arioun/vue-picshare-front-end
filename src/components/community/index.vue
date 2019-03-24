@@ -4,18 +4,24 @@
       <el-header>
         <el-row type="flex" justify="center" class="comhead">
           <el-col :span="2" :offset="0" :class="['communitybtn',flag1?'com-btn-act':'']">
+            <router-link to="/community/recommend">
             <el-button type="text" @click="show('tuijian')"  >推荐</el-button>
+            </router-link>
           </el-col>
           <el-col :span="2" :offset="5" :class="['communitybtn',flag2?'com-btn-act':'']">
+            <router-link to="/community/myfollow">
             <el-button type="text" @click="show('guanzhu')">关注</el-button>
+            </router-link>
           </el-col>
           <el-col :span="2" :offset="5" :class="['communitybtn',flag3?'com-btn-act':'']">
-            <el-button type="text" @click="show('myshequ')">我的社区</el-button>
+            <router-link to="/community/mycommunity">
+              <el-button type="text" @click="show('myshequ')">我的社区</el-button>
+            </router-link>
           </el-col>
         </el-row>
       </el-header>
       <el-main>
-        <component :is="comName"></component>
+        <router-view></router-view>
       </el-main>
     </el-container>
   </div>

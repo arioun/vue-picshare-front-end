@@ -11,7 +11,7 @@
       </el-row>
     </el-header>
     <el-main class="no-main">
-      <message></message>
+      <router-view></router-view>
     </el-main>
   </el-container>
 </template>
@@ -21,6 +21,11 @@ import message from "./message.vue";
 import notice from "./notice.vue";
 export default {
   name: "noticeindex",
+  data() {
+    return {
+      
+    }
+  },
   components: {
     message,
     notice
