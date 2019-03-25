@@ -1,6 +1,6 @@
 <template>
   <div class="me">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName" >
       <el-tab-pane label="评论" name="first" class="me-tab">
         <div class="me-item">
           <ul class="me-ul">

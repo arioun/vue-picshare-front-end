@@ -18,12 +18,11 @@
 import myheader from "./components/common/header.vue";
 import myfooter from "./components/common/footer.vue";
 
-
 export default {
   name: "app",
   components: {
     myheader,
-    myfooter
+    myfooter,
   },
   data(){
     return{

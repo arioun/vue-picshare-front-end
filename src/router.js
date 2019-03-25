@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import myindex from "./components/common/index.vue"
+import fabu from './components/common/fabu.vue'
 
 import gallery from './components/gallery/gallery.vue'
 
@@ -16,8 +17,9 @@ import focus from './components/community/focus.vue'
 import follows from './components/community/follows.vue'
 import albumdetail from './components/community/albumdetail.vue'
 
-import fabu from './components/common/fabu.vue'
-import notice from './components/notice/index.vue';
+import notice from './components/notice/index.vue'
+import message from './components/notice/message.vue'
+import inform from './components/notice/notice.vue'
 
 Vue.use(Router)
 
@@ -88,7 +90,23 @@ export default new Router({
     },
     {
       path: '/notice',
-      component: notice
+      component: notice,
+      children:[
+        {
+          path:'/',
+          component:message
+        },
+        {
+          path:'message',
+          name:'message',
+          component:message
+        },
+        {
+          path:'inform',
+          name:'inform',
+          component:inform
+        }
+      ]
     }
 
   ],

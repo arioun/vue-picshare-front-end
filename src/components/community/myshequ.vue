@@ -12,15 +12,15 @@
               <li>
                 <ul class="sq-ul3">
                   <li>
-                    <router-link to='/community/mycommunity/focus'>
-                    <el-button type="text" @click="show('focus')">关注&nbsp;{{focus}}</el-button>
-                  </router-link>
-                    </li>
-                  <li>
-                    <router-link to='/community/mycommunity/follows'>
-                    <el-button type="text" @click="show('follows')">粉丝&nbsp;{{follows}}</el-button>
+                    <router-link to="/community/mycommunity/focus">
+                      <el-button type="text" @click="show('focus')">关注&nbsp;{{focus}}</el-button>
                     </router-link>
-                    </li>
+                  </li>
+                  <li>
+                    <router-link to="/community/mycommunity/follows">
+                      <el-button type="text" @click="show('follows')">粉丝&nbsp;{{follows}}</el-button>
+                    </router-link>
+                  </li>
                 </ul>
               </li>
               <li class="sq-intr" v-text="introduction"></li>
@@ -42,19 +42,19 @@
           </el-col>
           <el-col :span="2" :offset="2" :class="['sq-btn',flag2?'sq-btn-act':'']">
             <router-link to="/community/mycommunity/mylike">
-            <el-button type="text" @click="show('like')">喜欢</el-button>
+              <el-button type="text" @click="show('mylike')">喜欢</el-button>
             </router-link>
           </el-col>
           <el-col :span="2" :offset="2" :class="['sq-btn',flag3?'sq-btn-act':'']">
             <router-link to="/community/mycommunity/myalbum">
-            <el-button type="text" @click="show('album')">相册</el-button>
+              <el-button type="text" @click="show('myalbum')">相册</el-button>
             </router-link>
           </el-col>
           <el-col :span="2" :offset="6">
             <el-button size="mini" class="mysq-btn-al" @click="newalbum = true">新建相册</el-button>
           </el-col>
         </el-row>
-        
+
         <el-dialog title="新建相册" :visible.sync="newalbum">
           <el-form :model="form">
             <el-form-item label="相册名称" :label-width="formLabelWidth1">
@@ -84,8 +84,8 @@
 import mywork from "./mywork.vue";
 import like from "./like.vue";
 import album from "./album.vue";
-import focus from './focus.vue'
-import follows from './follows.vue'
+import focus from "./focus.vue";
+import follows from "./follows.vue";
 export default {
   name: "myshequ",
   components: {
@@ -97,7 +97,7 @@ export default {
   },
   data() {
     return {
-      comName: "mywork",
+      comName: this.$route.path,
       flag1: true,
       flag2: false,
       flag3: false,
@@ -106,30 +106,37 @@ export default {
       introduction: "做个自我介绍吧..",
       focus: 12,
       follows: 15,
-      newalbum:false,
+      newalbum: false,
       form: {
-          name: '',
-          visible: ''
-        },
-        formLabelWidth1: '100px',
-        formLabelWidth2: '100px',
+        name: "",
+        visible: ""
+      },
+      formLabelWidth1: "100px",
+      formLabelWidth2: "100px"
     };
   },
   methods: {
     show(data) {
       this.comName = data;
+      if (/mywork/gi.test(this.comName)) {
+        (this.flag1 = true), (this.flag2 = false), (this.flag3 = false);
+      } else if (/mylike/gi.test(this.comName)) {
+        (this.flag1 = false), (this.flag2 = true), (this.flag3 = false);
+      } else if (/myalbum/gi.test(this.comName)) {
+        (this.flag1 = false), (this.flag2 = false), (this.flag3 = true);
+      }
     }
   },
-  updated() {
-    if (this.comName == "mywork") {
+  created() {
+    if (/mywork/gi.test(this.comName)) {
       (this.flag1 = true), (this.flag2 = false), (this.flag3 = false);
-    } else if (this.comName == "like") {
+    } else if (/mylike/gi.test(this.comName)) {
       (this.flag1 = false), (this.flag2 = true), (this.flag3 = false);
-    } else if (this.comName == "album") {
+    } else if (/myalbum/gi.test(this.comName)) {
       (this.flag1 = false), (this.flag2 = false), (this.flag3 = true);
-    }else{
-        (this.flag1 = false), (this.flag2 = false), (this.flag3 = false);
-    }
+    }else if (/detail/gi.test(this.comName)) {
+        (this.flag1 = false), (this.flag2 = false), (this.flag3 = true);
+      }
   }
 };
 </script>
@@ -196,8 +203,8 @@ export default {
   margin: 0;
   list-style: none;
 }
-.sq-ul3 span{
-    color: #ffffff !important;
+.sq-ul3 span {
+  color: #ffffff !important;
 }
 .sq-ul3 li {
   display: inline;
@@ -239,7 +246,7 @@ export default {
 .mysq-main {
   min-height: 500px;
   height: auto;
-  background-color: #F9F9F9;
+  background-color: #f9f9f9;
 }
 .mysq-btn-al {
   margin-top: 8px;

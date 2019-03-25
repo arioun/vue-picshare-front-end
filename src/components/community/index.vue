@@ -5,17 +5,17 @@
         <el-row type="flex" justify="center" class="comhead">
           <el-col :span="2" :offset="0" :class="['communitybtn',flag1?'com-btn-act':'']">
             <router-link to="/community/recommend">
-            <el-button type="text" @click="show('tuijian')"  >推荐</el-button>
+            <el-button type="text" @click="show('recommend')">推荐</el-button>
             </router-link>
           </el-col>
           <el-col :span="2" :offset="5" :class="['communitybtn',flag2?'com-btn-act':'']">
             <router-link to="/community/myfollow">
-            <el-button type="text" @click="show('guanzhu')">关注</el-button>
+            <el-button type="text" @click="show('myfollow')">关注</el-button>
             </router-link>
           </el-col>
           <el-col :span="2" :offset="5" :class="['communitybtn',flag3?'com-btn-act':'']">
             <router-link to="/community/mycommunity">
-              <el-button type="text" @click="show('myshequ')">我的社区</el-button>
+              <el-button type="text" @click="show('mycommunity')">我的社区</el-button>
             </router-link>
           </el-col>
         </el-row>
@@ -41,43 +41,42 @@ export default {
   },
   data() {
     return {
-      comName: "tuijian",
+      comName:this.$route.path,
       flag1:true,
       flag2:false,
       flag3:false
     };
   },
   methods: {
-    getInfo() {
-      this.$http.get("link").then(result => {
-        //code
-      });
-    },
-    postInfo() {
-      this.$http.post("link", {}, { emulateJSON: true }).then(result => {
-        //code
-      });
-    },
-    jsonpInfo() {
-      this.$http.jsonp("link").then(result => {
-        //code
-      });
-    },
     show(data) {
-      this.comName = data;
-    }
-  },
-  updated() {
-    if (this.comName == "tuijian") {
+      this.comName=data;
+      if (/recommend/gi.test(this.comName)) {
       this.flag1=true,
       this.flag2=false,
       this.flag3=false
-    }else if(this.comName == "guanzhu"){
+    }else if(/myfollow/gi.test(this.comName)){
       this.flag1=false,
       this.flag2=true,
       this.flag3=false
     }
-    else if(this.comName == "myshequ"){
+    else if(/mycommunity/gi.test(this.comName)){
+      this.flag1=false,
+      this.flag2=false,
+      this.flag3=true
+    }
+    }
+  },
+  created() {
+    if (/recommend/gi.test(this.comName)) {
+      this.flag1=true,
+      this.flag2=false,
+      this.flag3=false
+    }else if(/myfollow/gi.test(this.comName)){
+      this.flag1=false,
+      this.flag2=true,
+      this.flag3=false
+    }
+    else if(/mycommunity/gi.test(this.comName)){
       this.flag1=false,
       this.flag2=false,
       this.flag3=true
