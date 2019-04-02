@@ -5,6 +5,7 @@ import myindex from "./components/common/index.vue"
 import fabu from './components/common/fabu.vue'
 
 import gallery from './components/gallery/gallery.vue'
+import search from './components/gallery/search.vue'
 
 import community from "./components/community/index.vue"
 import mycommunity from './components/community/myshequ.vue'
@@ -31,6 +32,10 @@ export default new Router({
     {
       path: '/gallery',
       component: gallery
+    },
+    {
+      path:'/gallery/search',
+      component:search
     },
     {
       path: '/community',

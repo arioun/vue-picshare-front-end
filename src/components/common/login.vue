@@ -18,12 +18,12 @@
     </el-form>
     <el-row type="flex" justify="center" class="login">
       <el-col :span="23">
-        <el-button type="primary">登录</el-button>
+        <el-button type="primary" @click="login">登录</el-button>
       </el-col>
     </el-row>
     <el-row class="zhuce-btn">
       <el-col :span="4">
-        <el-button type="text" @click="register">立即注册</el-button>
+        <el-button type="text" @click="toregister">立即注册</el-button>
       </el-col>
     </el-row>
   </div>
@@ -38,8 +38,10 @@ export default {
     };
   },
   methods: {
-    register() {
+    toregister() {
       this.$emit("func", "register");
+    },login(){
+      this.$emit("login");
     }
   }
 };

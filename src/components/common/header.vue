@@ -28,12 +28,26 @@
       <el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1" class="hbtn1 hel-col">
         <img src="../../assets/user.png" class="huser">
       </el-col>
-      <el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1" class="hbtn1 hel-col">
-        <el-button type="text" class="hbtn" @click="dialogLogin= true">登录</el-button>
-      </el-col>
-      <el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1" class="hbtn1 hel-col">
-        <el-button type="text" class="hbtn" @click="dialogRegister= true">注册</el-button>
-      </el-col>
+      <div v-if="user">
+        <el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1" class="hbtn1 hel-col">
+          <el-button type="text" class="hbtn" @click="dialogLogin= true">登录</el-button>
+        </el-col>
+        <el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1" class="hbtn1 hel-col">
+          <el-button type="text" class="hbtn" @click="dialogRegister= true">注册</el-button>
+        </el-col>
+      </div>
+      <div v-else>
+        <el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1" class="user">
+          <el-dropdown @command="dropcommand">
+            <span class="el-dropdown-link">{{username}}</span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>个人中心</el-dropdown-item>
+              <el-dropdown-item command="setting">账号设置</el-dropdown-item>
+              <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-col>
+      </div>
       <el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1" class="hbtn2 hel-col">
         <router-link to="/notice">
           <div
@@ -43,19 +57,19 @@
         </router-link>
       </el-col>
     </el-row>
-    
+
     <el-dialog :title="dialogtitle" :visible.sync="dialogLogin" width="30%" class="head-dialog">
-      <component :is="dialogcom" @func='dialogswitch'></component>
+      <component :is="dialogcom" @func="dialogswitch" @login="login" @register="register"></component>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import login from './login.vue';
-import register from './register.vue'
+import login from "./login.vue";
+import register from "./register.vue";
 export default {
   name: "myheader",
-  components:{
+  components: {
     login,
     register
   },
@@ -67,9 +81,10 @@ export default {
       flag3: false,
       flag4: false,
       dialogLogin: false,
-      
-      dialogtitle:'登录',
-      dialogcom:'login'
+      user: true,
+      username: "pics",
+      dialogtitle: "登录",
+      dialogcom: "login"
     };
   },
   methods: {
@@ -102,20 +117,39 @@ export default {
           (this.flag4 = false);
       }
     },
-    dialogswitch(data){
-      this.dialogcom=data;
-      if(data=='login'){
-        this.dialogtitle="登录"
-      }else if(data=='register'){
-        this.dialogtitle="注册"
+    dialogswitch(data) {
+      this.dialogcom = data;
+      if (data == "login") {
+        this.dialogtitle = "登录";
+      } else if (data == "register") {
+        this.dialogtitle = "注册";
+      }
+    },
+    login() {
+      this.dialogLogin = false;
+      this.user = false;
+    },
+    logout(){
+      this.user=true;
+    },
+    register() {
+      this.dialogLogin = false;
+      this.user = false;
+    },
+    setting(){
+
+    },
+    dropcommand(data){
+      if (data=="logout") {
+        this.logout()
+      } else if(data=="setting"){
+        this.$options.methods.setting.bind(this)();
       }
     }
   },
   created() {
     this.comName = this.$route.path;
     if (/gallery/g.test(this.comName)) {
-      console.log("true");
-
       (this.flag1 = true),
         (this.flag2 = false),
         (this.flag3 = false),
@@ -141,7 +175,37 @@ export default {
         (this.flag3 = false),
         (this.flag4 = false);
     }
-  }
+  },
+  watch: {
+    '$route':function(to,from){
+      if (/gallery/g.test(to.path)) {
+      (this.flag1 = true),
+        (this.flag2 = false),
+        (this.flag3 = false),
+        (this.flag4 = false);
+    } else if (/community/g.test(to.path)) {
+      (this.flag1 = false),
+        (this.flag2 = true),
+        (this.flag3 = false),
+        (this.flag4 = false);
+    } else if (/publish/g.test(to.path)) {
+      (this.flag1 = false),
+        (this.flag2 = false),
+        (this.flag3 = true),
+        (this.flag4 = false);
+    } else if (/notice/g.test(to.path)) {
+      (this.flag1 = false),
+        (this.flag2 = false),
+        (this.flag3 = false),
+        (this.flag4 = true);
+    } else {
+      (this.flag1 = false),
+        (this.flag2 = false),
+        (this.flag3 = false),
+        (this.flag4 = false);
+    }
+    }
+  }, 
 };
 </script>
 
@@ -207,11 +271,15 @@ export default {
   color: #d1b200;
 }
 
-.head-dialog span{
-  
+.head-dialog span {
   font-weight: bold;
 }
-
-
+.user {
+  margin-top: 12px;
+  margin-right: 10px;
+}
+.user button {
+  color: #000;
+}
 </style>
 

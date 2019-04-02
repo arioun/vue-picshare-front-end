@@ -1,50 +1,17 @@
 <template>
-  <div class="ga">
-    <div class="gbanner">
-      <el-row type="flex" justify="center">
-        <el-col :span="10" :offset="0" class="gel-col">
-          <el-input placeholder="搜索图库内的图片" v-model="searchwords">
-            <el-button slot="append" icon="el-icon-search" class="tuku-search" @click="search"></el-button>
-          </el-input>
-        </el-col>
-      </el-row>
+  <div class="search">
+    <div class="search-row">
+    <el-row type="flex" justify="center" style="height:50px;">
+      <el-col :span="11" class="search-col">
+        <el-input placeholder="请输入内容" v-model="input" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search"></el-button>
+        </el-input>
+      </el-col>
+    </el-row>
     </div>
-    <div class="gmain">
-      <el-row type="flex" justify="center">
-        <el-col :span="1" :offset="0" class="gel-col2">
-          <img src="../../assets/dian.png">
-        </el-col>
-        <el-col :span="4" class="gel-col2">
-          <h1>热门专题</h1>
-        </el-col>
-        <el-col :span="1" :offset="0" class="gel-col2">
-          <img src="../../assets/dian.png">
-        </el-col>
-      </el-row>
-      <el-row type="flex" justify="center">
-        <el-col :span="4" :offset="0" class="gel-col3">
-          <h1>THEME</h1>
-        </el-col>
-      </el-row>
-      <el-row type="flex" justify="center" style="height:46px;">
-        <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="1" v-for="(sort,i) in sorts" v-if="i<10" :key="sort.id"
-         :class="['gel-col4',sort.flag?'gtuku-active':'']">
-          <el-button type="text" @click="sortacitve(sort.id)">{{sort.name}}</el-button>
-        </el-col>
-        <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="1" class="gel-col4 gsp">
-          <el-button plain round size="mini" @click="more">更多</el-button>
-        </el-col>
-      </el-row>
-      <el-row type="flex" justify="center" style="height:46px;" v-if="show">
-        <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="1" v-for="(sort,i) in sorts" v-if="i>10" :key="sort.id"
-          :class="['gel-col4',sort.flag?'gtuku-active':'']">
-          <el-button type="text" @click="sortacitve(sort.id)">{{sort.name}}</el-button>
-        </el-col>
-      </el-row>
-    </div>
-    <div class="gtuku">
+    <div class="search-result">
       <div
-        class="gtuku-div"
+        class="search-result-div"
         v-for="(img) in imgs"
         :key="img.id"
         :style="{width:img.width*200/img.height+'px',flexGrow:img.width*200/img.height}"
@@ -55,14 +22,12 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
-  name: "gallery",
+  name: "search",
   data() {
     return {
-      show:false,
-      searchwords:'',
+      input: "",
       imgs: [
         {
           url: "https://xieranmaya.github.io/images/cats/photo-103450229.jpg",
@@ -384,142 +349,56 @@ export default {
           width: 775,
           height: 1170
         }
-      ],
-      sorts:[
-        {id:0,name:"城市",flag:true},
-        {id:1,name:"星空",flag:false},
-        {id:2,name:"旅游",flag:false},
-        {id:3,name:"下雪",flag:false},
-        {id:4,name:"教育",flag:false},
-        {id:5,name:"美食",flag:false},
-        {id:6,name:"健身",flag:false},
-        {id:7,name:"风景",flag:false},
-        {id:8,name:"冬天",flag:false},
-        {id:9,name:"金融",flag:false},
-        {id:10,name:"背景",flag:false},
-        {id:11,name:"医疗",flag:false},
-        {id:12,name:"植物",flag:false},
-        {id:13,name:"阅读",flag:false},
-        {id:14,name:"动物",flag:false},
-        {id:15,name:"科技",flag:false},
-      ],
-      sorts2:[
-        
       ]
     };
   },
-  methods: {
-    sortacitve(key){
-      for (let i= 0; i<16; i++) {
-        this.sorts[i].flag=false;
-      };
-      this.sorts[key].flag=true;
-    },
-    more(){
-      this.show?this.show=false:this.show=true;
-    },
-    search(){
-      this.$router.push({path:'/gallery/search'});
-    }
-  },
+  methods: {}
 };
 </script>
-
 <style>
-.gbanner {
-  width: 100%;
-  height: 400px;
-  background: url("../../assets/tuku1.jpg") center no-repeat;
-  background-size: cover;
-}
-.gel-col {
-  padding-top: 20%;
-}
-.gel-col input {
-  height: 50px;
-  opacity: 0.8;
-  border-right: none;
-}
-.tuku-search{
-  background-color: rgba(0,0,0,0.1) !important;
-  border: none !important;
-}
-.gel-col i {
-  opacity: 1;
-  color: #101010;
-  font-weight: bold;
-  font-size: 1.5rem;
-  margin-right: 5px;
-}
-.gmain {
-  margin-top: 1%;
-  margin-bottom: 1%;
+.search {
+  min-height: 550px;
   height: auto;
+  background-color: #f5f5f5;
 }
-.gel-col2 {
+.search-row {
+  background-color: #fff;
   height: 60px;
+  position: fixed;
+  top: 47px;
+  width: 100%;
+  z-index: 9999;
 }
-.gel-col2 h1 {
-  text-align: center;
-  letter-spacing: 0.6em;
-  font-size: 2rem;
-  padding-left: 6%;
+.search-col {
+  position: absolute;
+  margin-top: 10px;
 }
-.gel-col2 img {
-  width: 18px;
-  height: 18px;
-  margin-top: 70%;
-  margin-left: 37%;
-}
-.gel-col3 h1 {
-  text-align: center;
-  letter-spacing: 0.4em;
-  font-size: 1.3rem;
-  padding-left: 5%;
-}
-.gel-col4{
-  text-align: center;
-  margin: 2px;
-}
-.gel-col4 span {
-  color: #bfbfbf;
-  text-align: center;
-}
-.gsp {
-  margin-top: 0.4%;
-}
-.gtuku-active{
-  border-bottom: #44a0ff solid 2px;
-}
-.gtuku-active span{
-  color: #000;
-}
-.gtuku {
+.search-result {
+  min-height: 300px;
   height: auto;
   display: flex;
   flex-wrap: wrap;
   width: 90%;
   margin: 0 auto;
-
+  padding-top: 80px;
 }
-
-.gtuku::after {
+.search-result::after {
   content: "";
   flex-grow: 999999999;
 }
 
-.gtuku-div {
+.search-result-div {
   margin: 2px;
   background-color: violet;
   position: relative;
   overflow: hidden;
 }
 
-.gtuku-div i {
+.search-result-div i {
   display: block;
 }
 
-.gtuku-div img {
+.search-result-div img {
   position: absolute;
   top: 0;
   width: 100%;
@@ -527,7 +406,8 @@ export default {
   cursor: pointer;
   transition: all 0.6s;
 }
-.gtuku-div img:hover{
+.search-result-div img:hover {
   transform: scale(1.2);
 }
 </style>
+
