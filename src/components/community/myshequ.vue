@@ -35,24 +35,24 @@
     <el-container>
       <el-header>
         <el-row type="flex" justify="center" class="sq-head">
-          <el-col :span="2" :offset="6" :class="['sq-btn',flag1?'sq-btn-act':'']">
+          <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"  :class="['sq-btn',flag1?'sq-btn-act':'']">
             <router-link to="/community/mycommunity/mywork">
               <el-button type="text" @click="show('mywork')">我的作品</el-button>
             </router-link>
           </el-col>
-          <el-col :span="2" :offset="2" :class="['sq-btn',flag2?'sq-btn-act':'']">
+          <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2" :class="['sq-btn','sq-like',flag2?'sq-btn-act':'']">
             <router-link to="/community/mycommunity/mylike">
               <el-button type="text" @click="show('mylike')">喜欢</el-button>
             </router-link>
           </el-col>
-          <el-col :span="2" :offset="2" :class="['sq-btn',flag3?'sq-btn-act':'']">
+          <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2" :class="['sq-btn',flag3?'sq-btn-act':'']">
             <router-link to="/community/mycommunity/myalbum">
               <el-button type="text" @click="show('myalbum')">相册</el-button>
             </router-link>
           </el-col>
-          <el-col :span="2" :offset="6">
+          <div v-if="flag4" :class="[flag5?'sq-head-btn3':'sq-head-btn']">
             <el-button size="mini" class="mysq-btn-al" @click="newalbum = true">新建相册</el-button>
-          </el-col>
+          </div>
         </el-row>
 
         <el-dialog title="新建相册" :visible.sync="newalbum">
@@ -101,6 +101,8 @@ export default {
       flag1: true,
       flag2: false,
       flag3: false,
+      flag4: false,
+      flag5: false,
       username: "Discovery",
       txurl: "/img/tx6.27d6e020.jpg",
       introduction: "做个自我介绍吧..",
@@ -119,24 +121,52 @@ export default {
     show(data) {
       this.comName = data;
       if (/mywork/gi.test(this.comName)) {
-        (this.flag1 = true), (this.flag2 = false), (this.flag3 = false);
+        this.flag1 = true;
+        this.flag2 = false;
+        this.flag3 = false;
+        this.flag4=false;
       } else if (/mylike/gi.test(this.comName)) {
-        (this.flag1 = false), (this.flag2 = true), (this.flag3 = false);
-      } else if (/myalbum/gi.test(this.comName)) {
-        (this.flag1 = false), (this.flag2 = false), (this.flag3 = true);
+        this.flag1 = false;
+        this.flag2 = true;
+        this.flag3 = false;
+        this.flag4=false;
+      } else if (/detail/gi.test(this.comName)) {
+        this.flag1 = false;
+        this.flag2 = false;
+        this.flag3 = true;
+        this.flag4=true;
+      }
+      else if (/myalbum/gi.test(this.comName)) {
+        this.flag1 = false;
+        this.flag2 = false;
+        this.flag3 = true;
+        this.flag4=true;
       }
     }
   },
   created() {
     if (/mywork/gi.test(this.comName)) {
-      (this.flag1 = true), (this.flag2 = false), (this.flag3 = false);
+      this.flag1 = true;
+        this.flag2 = false;
+        this.flag3 = false;
+        this.flag4=false;
     } else if (/mylike/gi.test(this.comName)) {
-      (this.flag1 = false), (this.flag2 = true), (this.flag3 = false);
-    } else if (/myalbum/gi.test(this.comName)) {
-      (this.flag1 = false), (this.flag2 = false), (this.flag3 = true);
-    }else if (/detail/gi.test(this.comName)) {
-        (this.flag1 = false), (this.flag2 = false), (this.flag3 = true);
+       this.flag1 = false;
+        this.flag2 = true;
+        this.flag3 = false;
+        this.flag4=false;
+    } else if (/detail/gi.test(this.comName)) {
+        this.flag1 = false;
+        this.flag2 = false;
+        this.flag3 = true;
+        this.flag4=true;
       }
+    else if (/myalbum/gi.test(this.comName)) {
+      this.flag1 = false;
+        this.flag2 = false;
+        this.flag3 = true;
+        this.flag4=true;
+    }
   }
 };
 </script>
@@ -233,6 +263,14 @@ export default {
   font-family: "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", tahoma, arial,
     simsun, "宋体";
 }
+.sq-like{
+  margin: 0 50px;
+}
+.sq-head-btn{
+  position: relative;
+  right: -28%;
+}
+
 .sq-btn span {
   font-size: 0.8rem;
   color: #000000;

@@ -72,7 +72,7 @@ export default new Router({
               component: myalbum
             },
             {
-              path: 'detail',
+              path: 'myalbum/detail',
               name: 'detail',
               component: albumdetail
             },

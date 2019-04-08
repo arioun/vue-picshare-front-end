@@ -50,9 +50,15 @@
         :style="{width:img.width*200/img.height+'px',flexGrow:img.width*200/img.height}"
       >
         <i :style="{paddingBottom:img.height/img.width*100+'%'}"></i>
-        <img :src="img.url">
+        <img :src="img.url" @click="showdia(img)">
       </div>
     </div>
+    <el-dialog :visible.sync="dialogVisible" width="70%">
+        <div class="dia-cont">
+          <img :src="diaitem.url">
+        </div>
+        <el-button type="text" @click="downpic(diaitem.url)">下载</el-button>
+      </el-dialog>
   </div>
 </template>
 
@@ -63,6 +69,8 @@ export default {
     return {
       show:false,
       searchwords:'',
+      dialogVisible: false,
+      diaitem: [],
       imgs: [
         {
           url: "https://xieranmaya.github.io/images/cats/photo-103450229.jpg",
@@ -420,7 +428,30 @@ export default {
     },
     search(){
       this.$router.push({path:'/gallery/search'});
-    }
+    },
+    showdia(item) {
+      this.dialogVisible = true;
+      this.diaitem = item;
+    },
+    downpic(domImg) {
+    // 创建隐藏的可下载链接
+    var eleLink = document.createElement('a');
+    eleLink.download = domImg;
+    eleLink.style.display = 'none';
+    // 图片转base64地址
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+    var width = domImg.naturalWidth;
+    var height = domImg.naturalHeight;
+    context.drawImage(domImg, 0, 0);
+    // 如果是PNG图片，则canvas.toDataURL('image/png')
+    eleLink.href = canvas.toDataURL('image/jpeg');
+    // 触发点击
+    document.body.appendChild(eleLink);
+    eleLink.click();
+    // 然后移除
+    document.body.removeChild(eleLink);
+}
   },
 };
 </script>
@@ -510,7 +541,7 @@ export default {
 
 .gtuku-div {
   margin: 2px;
-  background-color: violet;
+  background-color: #ededef;
   position: relative;
   overflow: hidden;
 }
@@ -529,5 +560,18 @@ export default {
 }
 .gtuku-div img:hover{
   transform: scale(1.2);
+}
+.el-dialog__body {
+  padding-top: 0;
+}
+.el-tabs__content {
+  padding: 0 !important;
+}
+
+.dia-cont {
+  margin: 0 auto;
+  width: auto;
+  height: auto;
+  text-align: center;
 }
 </style>

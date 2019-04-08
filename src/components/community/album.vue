@@ -2,7 +2,7 @@
   <div class="al">
     <el-row class="al-row">
       <el-col :span="5" class="al-col" v-for="(item) in items" :key="item.id">
-        <router-link to="/community/mycommunity/detail">
+        <router-link to="/community/mycommunity/myalbum/detail">
           <div class="al-two" :style="{backgroundImage:'url('+item.bgurl2+')'}">
             <div class="al-one" :style="{backgroundImage:'url('+item.bgurl1+')'}"></div>
           </div>
@@ -21,26 +21,26 @@ export default {
   name: "album",
   data() {
     return {
-      style:'/img/tj5.0df7aaca.jpg',
+      style:'',
       items: [
         {
           id: '1',
-          bgurl1: "/img/tj5.0df7aaca.jpg",
-          bgurl2: "/img/tj4.ec69682f.jpg",
+          bgurl1: "https://xuejiawei1.github.io/vue-picshare-front-end/src/assets/tj5.jpg",
+          bgurl2: "https://xuejiawei1.github.io/vue-picshare-front-end/src/assets/tj4.jpg",
           alname: "城市",
           alnum: "15"
         },
         {
           id: '2',
-          bgurl1: "/img/tj5.0df7aaca.jpg",
-          bgurl2: "/img/tj4.ec69682f.jpg",
+          bgurl1: "https://xuejiawei1.github.io/vue-picshare-front-end/src/assets/tj5.jpg",
+          bgurl2: "https://xuejiawei1.github.io/vue-picshare-front-end/src/assets/tj4.jpg",
           alname: "城市",
           alnum: "15"
         },
         {
           id: '3',
-          bgurl1: "/img/tj5.0df7aaca.jpg",
-          bgurl2: "/img/tj4.ec69682f.jpg",
+          bgurl1: "https://xuejiawei1.github.io/vue-picshare-front-end/src/assets/tj5.jpg",
+          bgurl2: "https://xuejiawei1.github.io/vue-picshare-front-end/src/assets/tj4.jpg",
           alname: "城市",
           alnum: "15"
         },

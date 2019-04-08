@@ -1,35 +1,35 @@
 <template>
   <div class="gz">
-    <div class="gz-card">
+    <div class="gz-card" v-for="item of items" :key="item.id">
       <el-row type="flex" class="gz-row" justify="center">
         <el-col :span="24">
-          <img src="../../assets/gz1.jpg" class="gz-pic">
+          <img :src="item.url" class="gz-pic">
         </el-col>
       </el-row>
       <!--author-->
       <el-row class="gz-card-author" >
         <el-col :span="2" class="gz-tx">
-          <img src="../../assets/tx1.jpg" >
+          <img :src="item.tx" >
         </el-col>
         <el-col :span="2" class="gz-name">
-          <p >云卷云舒</p>
+          <p v-text="item.username"></p>
         </el-col>
         <el-col :span="2" :offset="1" class="gz-date">
           <p>11月1日</p>
         </el-col>
         <el-col :span="3" :offset="11" class="gz-btn-zan">
           <el-button icon="el-icon-gz-heart"></el-button>
-          <p>30</p>
+          <p v-text="item.like"></p>
         </el-col>
         <el-col :span="3" class="gz-btn-zan">
           <el-button icon="el-icon-gz-comment"></el-button>
-          <p>70</p>
+          <p v-text="item.comments"></p>
         </el-col>
       </el-row>
       <!--描述-->
       <el-row>
         <el-col :span="20" class="gz-card-words">
-          <p>晨曦中的落基山脉。。</p>
+          <p v-text="item.text"></p>
         </el-col>
       </el-row>
       <!--输入评论-->
@@ -41,18 +41,36 @@
         </el-col>
       </el-row>
       <!--评论者-->
-      <div class="gz-comments">
+      <div class="gz-comments" v-for="(o,i) of 10" v-if="i<5" :key="o">
         <el-row>
           <el-col :span="2" class="gz-follow-tx">
-            <img src="../../assets/tx2.jpg" >
+            <img :src="item.tx" >
           </el-col>
           <el-col :span="2" class="gz-follow-name">
-            <p>Tingw</p>
+            <p v-text="item.username"></p>
           </el-col>
         </el-row>
         <el-row class="gz-follow-comment">
           <el-col :span="5" :offset="2">
-            <p>手动点赞</p>
+            <p v-text="item.text"></p>
+          </el-col>
+          <el-col :span="2" :offset="15">
+            <p class="gz-follow-comment-date">42分钟前</p>
+          </el-col>
+        </el-row>
+      </div>
+      <div class="gz-comments" v-for="(o,i) of 10" v-if="i>5&items[item.id].flag" :key="o">
+          <el-row>
+          <el-col :span="2" class="gz-follow-tx">
+            <img :src="item.tx" >
+          </el-col>
+          <el-col :span="2" class="gz-follow-name">
+            <p v-text="item.username"></p>
+          </el-col>
+        </el-row>
+        <el-row class="gz-follow-comment">
+          <el-col :span="5" :offset="2">
+            <p v-text="item.text"></p>
           </el-col>
           <el-col :span="2" :offset="15">
             <p class="gz-follow-comment-date">42分钟前</p>
@@ -60,9 +78,9 @@
         </el-row>
       </div>
       <!--展示更多-->
-    <el-row type="flex" justify="center">
+    <el-row type="flex" justify="center" v-if="!items[item.id].flag">
         <el-col :span="4">
-          <el-button type="text" class="gz-more">查看更多评论<i class="el-icon-my-arrow-down el-icon--right"></i></el-button>
+          <el-button type="text" class="gz-more" @click="showmore(item.id)">查看更多评论<i class="el-icon-my-arrow-down el-icon--right"></i></el-button>
         </el-col>
       </el-row>
     </div>
@@ -71,15 +89,169 @@
 
 <script>
 export default {
-  name: "guanzhu"
+  name: "guanzhu",
+  data() {
+    return {
+      
+      items: [
+        {
+          id: 0,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
+          url: "https://xieranmaya.github.io/images/cats/photo-103450229.jpg",
+          width: 675,
+          height: 900,
+          flag:false
+        },
+        {
+          id: 1,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
+          url: "https://xieranmaya.github.io/images/cats/photo-108273877.jpg",
+          width: 1170,
+          height: 780,
+          flag:false
+        },
+        {
+          id: 2,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
+          url: "https://xieranmaya.github.io/images/cats/photo-115203323.jpg",
+          width: 1170,
+          height: 780,
+          flag:false
+        },
+        {
+          id: 3,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
+          url: "https://xieranmaya.github.io/images/cats/photo-23583825.jpg",
+          width: 2048,
+          height: 1536,
+          flag:false
+        },
+        {
+          id: 4,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
+          url:
+            "https://xieranmaya.github.io/images/cats/stock-photo-123942383.jpg",
+          width: 2000,
+          height: 1333,
+          flag:false
+        },
+        {
+          id: 5,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
+          url:
+            "https://xieranmaya.github.io/images/cats/stock-photo-124559545.jpg",
+          width: 2000,
+          height: 1333,
+          flag:false
+        },
+        {
+          id: 6,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
+          url:
+            "https://xieranmaya.github.io/images/cats/stock-photo-132046989.jpg",
+          width: 1170,
+          height: 780,
+          flag:false
+        },
+        {
+          id: 7,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
+          url:
+            "https://xieranmaya.github.io/images/cats/stock-photo-132118343.jpg",
+          width: 2000,
+          height: 1339,
+          flag:false
+        },
+        {
+          id: 8,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
+          url:
+            "https://xieranmaya.github.io/images/cats/stock-photo-132311221.jpg",
+          width: 1920,
+          height: 1080,
+          flag:false
+        },
+        {
+          id: 9,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
+          url:
+            "https://xieranmaya.github.io/images/cats/stock-photo-132586903.jpg",
+          width: 2000,
+          height: 1334,
+          flag:false
+        },
+        {
+          id: 10,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
+          url:
+            "https://xieranmaya.github.io/images/cats/stock-photo-135203031.jpg",
+          width: 1000,
+          height: 668,
+          flag:false
+        }
+      ]
+    }
+  },
+  methods: {
+   showmore(id){
+      this.items[id].flag=true;
+    },
+  },
+  created () {
+    
+  }
 };
 </script>
 
 <style>
 .gz {
   background-color: #f9f9f9;
-  height: 100%;
-  width: 100%;
+  min-height: 500px;
+  height: auto;
   overflow: hidden;
 }
 .gz-card {

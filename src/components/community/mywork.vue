@@ -1,15 +1,57 @@
 <template>
   <div class="mywork">
+    <div
+      class="mywork-div"
+      v-for="(img) in items"
+      :key="img.id"
+      :style="{width:img.width*200/img.height+'px',flexGrow:img.width*200/img.height}"
+    >
       <div
-        class="mywork-div"
-        v-for="(img) in imgs"
-        :key="img.id"
-        :style="{width:img.width*200/img.height+'px',flexGrow:img.width*200/img.height}"
-      >
-        <i :style="{paddingBottom:img.height/img.width*100+'%'}"></i>
-        <img :src="img.url">
+        class="mywork-img"
+        :style="{backgroundImage:'url('+img.url+')',backgroundRepeat:'no-repeat',backgroundPosition:'center',backgroundSize:'cover',width:'100%',height:'100%'}"
+      ></div>
+      <div class="mywork-shadow">
+        <div class="mywork-det">
+          <el-button type="text" @click="show(img)">查看详情</el-button>
+        </div>
+        <div class="mywork-btn">
+          <el-button type="text">删除</el-button>
+        </div>
+        <div class="mywork-lc">{{img.like}}喜欢/{{img.comments}}评论</div>
       </div>
+      <i :style="{paddingBottom:img.height/img.width*100+'%'}"></i>
     </div>
+
+    <el-dialog :visible.sync="dialogVisible" width="70%" class="tj-dia">
+      <div class="dia-cont">
+        <img :src="diaitem.url">
+      </div>
+      <div class="dia-text" v-text="diaitem.text"></div>
+      <el-tabs v-model="activeName">
+        <el-tab-pane :label="'热度('+diaitem.like+')'" name="hot">
+          <div class="dia-tabs">
+            <div class="hot" v-for="o in 5" :key="o">
+              <div class="hot-tx">
+                <img :src="diaitem.tx">
+              </div>
+              <div class="hot-name" v-text="diaitem.username"></div>喜欢此图片
+            </div>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane :label="'评论('+diaitem.comments+')'" name="comments">
+          <div class="dia-tabs">
+            <div class="hot" v-for="o in 5" :key="o">
+              <div class="hot-tx">
+                <img :src="diaitem.tx">
+              </div>
+              <div class="hot-name" v-text="diaitem.username"></div>
+              <div class="coms-com" v-text="diaitem.text"></div>
+            </div>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -17,330 +59,158 @@ export default {
   name: "mywork",
   data() {
     return {
-      imgs: [
+      dialogVisible: false,
+      diaitem: [],
+      activeName: "comments",
+      items: [
         {
+          id: 0,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
           url: "https://xieranmaya.github.io/images/cats/photo-103450229.jpg",
           width: 675,
-          height: 900
+          height: 900,
+          flag: false
         },
         {
+          id: 1,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
           url: "https://xieranmaya.github.io/images/cats/photo-108273877.jpg",
           width: 1170,
-          height: 780
+          height: 780,
+          flag: false
         },
         {
+          id: 2,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
           url: "https://xieranmaya.github.io/images/cats/photo-115203323.jpg",
           width: 1170,
-          height: 780
+          height: 780,
+          flag: false
         },
         {
+          id: 3,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
           url: "https://xieranmaya.github.io/images/cats/photo-23583825.jpg",
           width: 2048,
-          height: 1536
+          height: 1536,
+          flag: false
         },
         {
+          id: 4,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
           url:
             "https://xieranmaya.github.io/images/cats/stock-photo-123942383.jpg",
           width: 2000,
-          height: 1333
+          height: 1333,
+          flag: false
         },
         {
+          id: 5,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
           url:
             "https://xieranmaya.github.io/images/cats/stock-photo-124559545.jpg",
           width: 2000,
-          height: 1333
+          height: 1333,
+          flag: false
         },
         {
+          id: 6,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
           url:
             "https://xieranmaya.github.io/images/cats/stock-photo-132046989.jpg",
           width: 1170,
-          height: 780
+          height: 780,
+          flag: false
         },
         {
+          id: 7,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
           url:
             "https://xieranmaya.github.io/images/cats/stock-photo-132118343.jpg",
           width: 2000,
-          height: 1339
+          height: 1339,
+          flag: false
         },
         {
+          id: 8,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
           url:
             "https://xieranmaya.github.io/images/cats/stock-photo-132311221.jpg",
           width: 1920,
-          height: 1080
+          height: 1080,
+          flag: false
         },
         {
+          id: 9,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
           url:
             "https://xieranmaya.github.io/images/cats/stock-photo-132586903.jpg",
           width: 2000,
-          height: 1334
+          height: 1334,
+          flag: false
         },
         {
+          id: 10,
+          tx: "/img/tx6.27d6e020.jpg",
+          username: "冬眠的熊",
+          text: "月有阴晴圆缺",
+          like: "8",
+          comments: "20",
           url:
             "https://xieranmaya.github.io/images/cats/stock-photo-135203031.jpg",
           width: 1000,
-          height: 668
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-135626379.jpg",
-          width: 2000,
-          height: 1500
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-136947953.jpg",
-          width: 2000,
-          height: 1348
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-138378295.jpg",
-          width: 2000,
-          height: 1333
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-138436811.jpg",
-          width: 2000,
-          height: 1333
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-142950305.jpg",
-          width: 2000,
-          height: 1125
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-143046061.jpg",
-          width: 843,
-          height: 1000
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-143181649.jpg",
-          width: 2000,
-          height: 1298
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-144530143.jpg",
-          width: 2000,
-          height: 1333
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-144730939.jpg",
-          width: 1000,
-          height: 1000
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-145414771.jpg",
-          width: 780,
-          height: 1170
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-146038669.jpg",
-          width: 2000,
-          height: 1335
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-146231033.jpg",
-          width: 2000,
-          height: 1335
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-146914861.jpg",
-          width: 843,
-          height: 1000
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-147877407.jpg",
-          width: 2000,
-          height: 1334
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-147969173.jpg",
-          width: 2000,
-          height: 1333
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-148015373.jpg",
-          width: 1170,
-          height: 781
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-148704233.jpg",
-          width: 1170,
-          height: 884
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-148928293.jpg",
-          width: 1170,
-          height: 781
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-148950715.jpg",
-          width: 1170,
-          height: 775
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-21951271.jpg",
-          width: 2000,
-          height: 1333
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-21964829.jpg",
-          width: 2000,
-          height: 1333
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-22618399.jpg",
-          width: 2000,
-          height: 1333
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-31201539.jpg",
-          width: 2000,
-          height: 1333
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-34598868.jpg",
-          width: 542,
-          height: 768
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-47252094.jpg",
-          width: 2000,
-          height: 1333
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-51980510.jpg",
-          width: 666,
-          height: 1000
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-55601508.jpg",
-          width: 666,
-          height: 1000
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-65681789.jpg",
-          width: 1840,
-          height: 1232
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-70461471.jpg",
-          width: 1000,
-          height: 1000
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-71801901.jpg",
-          width: 2000,
-          height: 1335
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-71913567.jpg",
-          width: 2000,
-          height: 1328
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-72223295.jpg",
-          width: 2000,
-          height: 1335
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-72620185.jpg",
-          width: 2000,
-          height: 1333
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-74402039.jpg",
-          width: 666,
-          height: 1000
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-75097491.jpg",
-          width: 2000,
-          height: 1333
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-75186237.jpg",
-          width: 2000,
-          height: 1333
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-79250373.jpg",
-          width: 2000,
-          height: 1325
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-79692589.jpg",
-          width: 670,
-          height: 1000
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-7979718.jpg",
-          width: 1024,
-          height: 680
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-7980252.jpg",
-          width: 1024,
-          height: 680
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-81390687.jpg",
-          width: 2000,
-          height: 1591
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-81988949.jpg",
-          width: 667,
-          height: 1000
-        },
-        {
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-83149705.jpg",
-          width: 775,
-          height: 1170
+          height: 668,
+          flag: false
         }
-      ],
-    }
+      ]
+    };
   },
+  methods: {
+    show(item) {
+      this.dialogVisible = true;
+      this.diaitem = item;
+    }
+  }
 };
 </script>
 
@@ -366,9 +236,8 @@ export default {
   flex-wrap: wrap;
   width: 95%;
   margin: 0 auto;
-  
 }
-.mywork::after {
+.mywork:after {
   content: "";
   flex-grow: 999999999;
 }
@@ -379,21 +248,106 @@ export default {
   position: relative;
   overflow: hidden;
 }
-
 .mywork-div i {
   display: block;
 }
-
-.mywork-div img {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  vertical-align: bottom;
-  cursor: pointer;
+.mywork-img {
   transition: all 0.6s;
 }
-.mywork-div img:hover {
+.mywork-img:hover {
   transform: scale(1.2);
+}
+.mywork-shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0);
+  opacity: 0;
+  transition: all 0.2s;
+}
+.mywork-shadow:hover {
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 1;
+}
+.mywork-det {
+  color: #fff;
+  position: relative;
+  top: 40%;
+  left: 40%;
+}
+.mywork-det span {
+  color: #fff;
+}
+.mywork-btn {
+  position: relative;
+  top: 65%;
+  left: 85%;
+}
+.mywork-btn span {
+  color: #fff;
+  font-size: 12px;
+}
+.mywork-lc {
+  color: #fff;
+  font-size: 12px;
+  position: relative;
+  top: 55%;
+  left: 5%;
+}
+
+.el-dialog__body {
+  padding-top: 0;
+}
+.el-tabs__content {
+  padding: 0 !important;
+}
+
+.dia-cont {
+  margin: 0 auto;
+  width: auto;
+  height: auto;
+  text-align: center;
+}
+.dia-text {
+  margin: 50px 0 0 20px;
+  display: inline-block;
+  font-family: "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", tahoma, arial,
+    simsun, "宋体";
+  font-size: 1rem;
+  color: #444;
+}
+.dia-tabs {
+  background-color: #fafafa;
+  overflow: hidden;
+}
+.el-tabs__nav {
+  margin-left: 0 !important;
+}
+.hot {
+  border-bottom: 1px solid #e7e7e7;
+  padding: 10px 0 10px 10px;
+  font-size: 12px;
+}
+.hot-tx {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+}
+.hot-tx img {
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+}
+.hot-name {
+  display: inline-block;
+  margin: 0 10px;
+  color: #7594b3;
+}
+.coms-com {
+  display: inline-block;
 }
 </style>
 
