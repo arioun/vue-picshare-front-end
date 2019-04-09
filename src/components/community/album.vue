@@ -2,15 +2,13 @@
   <div class="al">
     <el-row class="al-row">
       <el-col :span="5" class="al-col" v-for="(item) in items" :key="item.id">
-        <router-link to="/community/mycommunity/myalbum/detail">
-          <div class="al-two" :style="{backgroundImage:'url('+item.bgurl2+')'}">
-            <div class="al-one" :style="{backgroundImage:'url('+item.bgurl1+')'}"></div>
-          </div>
-          <ul class="al-ul">
-            <li class="al-name">{{item.alname}}</li>
-            <li class="al-num">{{item.alnum}}张</li>
-          </ul>
-        </router-link>
+        <div class="al-two" :style="{backgroundImage:'url('+item.bgurl2+')'}">
+          <div class="al-one" :style="{backgroundImage:'url('+item.bgurl1+')'}" @click="detail"></div>
+        </div>
+        <ul class="al-ul">
+          <li class="al-name">{{item.alname}}</li>
+          <li class="al-num">{{item.alnum}}张</li>
+        </ul>
       </el-col>
     </el-row>
   </div>
@@ -21,40 +19,50 @@ export default {
   name: "album",
   data() {
     return {
-      style:'',
+      style: "",
+      comName: this.$route.path,
       items: [
         {
-          id: '1',
-          bgurl1: "https://xuejiawei1.github.io/vue-picshare-front-end/src/assets/tj5.jpg",
-          bgurl2: "https://xuejiawei1.github.io/vue-picshare-front-end/src/assets/tj4.jpg",
+          id: "1",
+          bgurl1:
+            "https://xuejiawei1.github.io/vue-picshare-front-end/src/assets/tj5.jpg",
+          bgurl2:
+            "https://xuejiawei1.github.io/vue-picshare-front-end/src/assets/tj4.jpg",
           alname: "城市",
           alnum: "15"
         },
         {
-          id: '2',
-          bgurl1: "https://xuejiawei1.github.io/vue-picshare-front-end/src/assets/tj5.jpg",
-          bgurl2: "https://xuejiawei1.github.io/vue-picshare-front-end/src/assets/tj4.jpg",
+          id: "2",
+          bgurl1:
+            "https://xuejiawei1.github.io/vue-picshare-front-end/src/assets/tj5.jpg",
+          bgurl2:
+            "https://xuejiawei1.github.io/vue-picshare-front-end/src/assets/tj4.jpg",
           alname: "城市",
           alnum: "15"
         },
         {
-          id: '3',
-          bgurl1: "https://xuejiawei1.github.io/vue-picshare-front-end/src/assets/tj5.jpg",
-          bgurl2: "https://xuejiawei1.github.io/vue-picshare-front-end/src/assets/tj4.jpg",
+          id: "3",
+          bgurl1:
+            "https://xuejiawei1.github.io/vue-picshare-front-end/src/assets/tj5.jpg",
+          bgurl2:
+            "https://xuejiawei1.github.io/vue-picshare-front-end/src/assets/tj4.jpg",
           alname: "城市",
           alnum: "15"
-        },
-      ],
-      methods: {
-        show(i){
-
         }
-      },
+      ]
     };
+  },
+  methods: {
+    detail() {
+      if (/others/gi.test(this.comName)) {
+        this.$router.push({ path: "/community/others/album/detail" });
+      } else {
+        this.$router.push({ path: "/community/mycommunity/myalbum/detail" });
+      }
+    }
   }
 };
 </script>
-
 <style>
 .al {
   margin-top: 10px;
@@ -75,6 +83,7 @@ export default {
   position: relative;
   left: 15px;
   top: 10px;
+  cursor: pointer;
 }
 .al-two {
   width: 280px;

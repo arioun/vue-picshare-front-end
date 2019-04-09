@@ -26,9 +26,6 @@
               <li class="sq-intr" v-text="introduction"></li>
             </ul>
           </li>
-          <li class="sq-btn-editfm">
-            <el-button type="text">编辑封面&nbsp;></el-button>
-          </li>
         </ul>
       </div>
     </div>
@@ -36,7 +33,7 @@
       <el-header>
         <el-row type="flex" justify="center" class="sq-head">
           <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="1" :class="['sq-btn',flag1?'sq-btn-act':'']">
-            <el-button type="text" @click="show('mywork')">我的作品</el-button>
+            <el-button type="text" @click="show('work')">他的作品</el-button>
           </el-col>
           <el-col
             :xs="1"
@@ -46,7 +43,7 @@
             :xl="1"
             :class="['sq-btn','sq-like',flag2?'sq-btn-act':'']"
           >
-            <el-button type="text" @click="show('mylike')">喜欢</el-button>
+            <el-button type="text" @click="show('like')">喜欢</el-button>
           </el-col>
           <el-col
             :xs="1"
@@ -56,33 +53,12 @@
             :xl="1"
             :class="['sq-btn','sq-collection',collection?'sq-btn-act':'']"
           >
-            <el-button type="text" @click="show('mycollection')">收藏</el-button>
+            <el-button type="text" @click="show('collection')">收藏</el-button>
           </el-col>
           <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="1" :class="['sq-btn',flag3?'sq-btn-act':'']">
-            <el-button type="text" @click="show('myalbum')">相册</el-button>
+            <el-button type="text" @click="show('album')">相册</el-button>
           </el-col>
-          <div v-if="flag4" :class="[flag5?'sq-head-btn3':'sq-head-btn']">
-            <el-button size="mini" class="mysq-btn-al" @click="newalbum = true">新建相册</el-button>
-          </div>
         </el-row>
-
-        <el-dialog title="新建相册" :visible.sync="newalbum">
-          <el-form :model="form">
-            <el-form-item label="相册名称" :label-width="formLabelWidth1">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="是否公开" :label-width="formLabelWidth2">
-              <el-select v-model="form.visible" placeholder="请选择是否公开">
-                <el-option label="是" value="visible"></el-option>
-                <el-option label="否" value="unvisible"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="newalbum = false">取 消</el-button>
-            <el-button type="primary" @click="newalbum = false">确 定</el-button>
-          </div>
-        </el-dialog>
       </el-header>
       <el-main class="mysq-main">
         <router-view></router-view>
@@ -93,7 +69,7 @@
 
 <script>
 export default {
-  name: "myshequ",
+  name: "others",
   components: {},
   data() {
     return {
@@ -101,8 +77,6 @@ export default {
       flag1: true,
       flag2: false,
       flag3: false,
-      flag4: false,
-      flag5: false,
       collection: false,
       username: "Discovery",
       txurl: "/img/tx6.27d6e020.jpg",
@@ -122,52 +96,45 @@ export default {
     show(data) {
       this.comName = data;
       if (/focus/gi.test(this.comName)) {
-        this.$router.push({ path: "/community/mycommunity/focus" });
+        this.$router.push({ path: "/community/others/focus" });
         this.flag1 = false;
         this.flag2 = false;
         this.flag3 = false;
-        this.flag4 = false;
         this.collection = false;
       } else if (/follows/gi.test(this.comName)) {
-        this.$router.push({ path: "/community/mycommunity/follows" });
+        this.$router.push({ path: "/community/others/follows" });
         this.flag1 = false;
         this.flag2 = false;
         this.flag3 = false;
-        this.flag4 = false;
         this.collection = false;
-      } else if (/mywork/gi.test(this.comName)) {
-        this.$router.push({ path: "/community/mycommunity/mywork" });
+      } else if (/work/gi.test(this.comName)) {
+        this.$router.push({ path: "/community/others/work" });
         this.flag1 = true;
         this.flag2 = false;
         this.flag3 = false;
-        this.flag4 = false;
         this.collection = false;
-      } else if (/mylike/gi.test(this.comName)) {
-        this.$router.push({ path: "/community/mycommunity/mylike" });
+      } else if (/like/gi.test(this.comName)) {
+        this.$router.push({ path: "/community/others/like" });
         this.flag1 = false;
         this.flag2 = true;
         this.flag3 = false;
-        this.flag4 = false;
         this.collection = false;
-      } else if (/mycollection/gi.test(this.comName)) {
-        this.$router.push({ path: "/community/mycommunity/mycollection" });
+      } else if (/collection/gi.test(this.comName)) {
+        this.$router.push({ path: "/community/others/collection" });
         this.flag1 = false;
         this.flag2 = false;
         this.flag3 = false;
-        this.flag4 = false;
         this.collection = true;
       } else if (/detail/gi.test(this.comName)) {
         this.flag1 = false;
         this.flag2 = false;
         this.flag3 = true;
-        this.flag4 = true;
         this.collection = false;
-      } else if (/myalbum/gi.test(this.comName)) {
-        this.$router.push({ path: "/community/mycommunity/myalbum" });
+      } else if (/album/gi.test(this.comName)) {
+        this.$router.push({ path: "/community/others/album" });
         this.flag1 = false;
         this.flag2 = false;
         this.flag3 = true;
-        this.flag4 = true;
         this.collection = false;
       }
     }
@@ -177,43 +144,36 @@ export default {
       this.flag1 = false;
       this.flag2 = false;
       this.flag3 = false;
-      this.flag4 = false;
       this.collection = false;
     } else if (/follows/gi.test(this.comName)) {
       this.flag1 = false;
       this.flag2 = false;
       this.flag3 = false;
-      this.flag4 = false;
       this.collection = false;
-    } else if (/mywork/gi.test(this.comName)) {
+    } else if (/work/gi.test(this.comName)) {
       this.flag1 = true;
       this.flag2 = false;
       this.flag3 = false;
-      this.flag4 = false;
       this.collection = false;
-    } else if (/mylike/gi.test(this.comName)) {
+    } else if (/like/gi.test(this.comName)) {
       this.flag1 = false;
       this.flag2 = true;
       this.flag3 = false;
-      this.flag4 = false;
       this.collection = false;
-    } else if (/mycollection/gi.test(this.comName)) {
+    } else if (/collection/gi.test(this.comName)) {
       this.flag1 = false;
       this.flag2 = false;
       this.flag3 = false;
-      this.flag4 = false;
       this.collection = true;
     } else if (/detail/gi.test(this.comName)) {
       this.flag1 = false;
       this.flag2 = false;
       this.flag3 = true;
-      this.flag4 = true;
       this.collection = false;
-    } else if (/myalbum/gi.test(this.comName)) {
+    } else if (/album/gi.test(this.comName)) {
       this.flag1 = false;
       this.flag2 = false;
       this.flag3 = true;
-      this.flag4 = true;
       this.collection = false;
     }
   }

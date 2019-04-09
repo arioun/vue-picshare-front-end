@@ -300,10 +300,6 @@ export default {
 .el-dialog__body {
   padding-top: 0;
 }
-.el-tabs__content {
-  padding: 0 !important;
-}
-
 .dia-cont {
   margin: 0 auto;
   width: auto;
@@ -321,9 +317,6 @@ export default {
 .dia-tabs {
   background-color: #fafafa;
   overflow: hidden;
-}
-.el-tabs__nav {
-  margin-left: 0 !important;
 }
 .hot {
   border-bottom: 1px solid #e7e7e7;

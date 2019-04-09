@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import myindex from "./components/common/index.vue"
 import fabu from './components/common/fabu.vue'
+import others from './components/common/others.vue'
 
 import gallery from './components/gallery/gallery.vue'
 import search from './components/gallery/search.vue'
@@ -13,6 +14,7 @@ import recommend from './components/community/tuijian.vue'
 import myfollow from './components/community/guanzhu.vue'
 import mywork from './components/community/mywork.vue'
 import mylike from './components/community/like.vue'
+import collection from './components/community/collection.vue'
 import myalbum from './components/community/album.vue'
 import focus from './components/community/focus.vue'
 import follows from './components/community/follows.vue'
@@ -22,6 +24,10 @@ import notice from './components/notice/index.vue'
 import message from './components/notice/message.vue'
 import inform from './components/notice/notice.vue'
 
+import user from './components/user/user.vue'
+import profile from './components/user/profile.vue'
+import account from './components/user/account.vue'
+import setting from './components/user/setting.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -36,6 +42,44 @@ export default new Router({
     {
       path:'/gallery/search',
       component:search
+    },
+    {
+      path:'/community/others',
+      name:'others',
+      component:others,
+      children:[{
+        path: '/',
+        component: mywork,
+      },
+      {
+        path: 'work',
+        component: mywork,
+      },
+      {
+        path: 'like',
+        component: mylike,
+      },
+      {
+        path: 'collection',
+        component: collection,
+      },
+      {
+        path: 'album',
+        component: myalbum
+      },
+      {
+        path: 'album/detail',
+        component: albumdetail
+      },
+      {
+        path: 'focus',
+        component: focus,
+      },
+      {
+        path: 'follows',
+        component: follows,
+      }
+    ]
     },
     {
       path: '/community',
@@ -68,12 +112,15 @@ export default new Router({
               component: mylike,
             },
             {
+              path: 'mycollection',
+              component: collection,
+            },
+            {
               path: 'myalbum',
               component: myalbum
             },
             {
               path: 'myalbum/detail',
-              name: 'detail',
               component: albumdetail
             },
             {
@@ -112,8 +159,33 @@ export default new Router({
           component:inform
         }
       ]
+    },
+    {
+      path:'/user',
+      name:'user',
+      component: user,
+      children:[
+        {
+          path:'/',
+          component:profile
+        },
+        {
+          path:'profile',
+          name:'profile',
+          component:profile
+        },
+        {
+          path:'account',
+          name:'account',
+          component:account
+        },
+        {
+          path:'setting',
+          name:'setting',
+          component:setting
+        }
+      ]
     }
-
   ],
   mode: 'history'
 })

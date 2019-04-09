@@ -420,7 +420,7 @@ export default {
     sortacitve(key){
       for (let i= 0; i<16; i++) {
         this.sorts[i].flag=false;
-      };
+      }
       this.sorts[key].flag=true;
     },
     more(){

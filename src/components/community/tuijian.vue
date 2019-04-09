@@ -312,9 +312,6 @@ export default {
 .el-dialog__body {
   padding-top: 0;
 }
-.el-tabs__content {
-  padding: 0 !important;
-}
 .diahead {
   height: 50px;
   margin-bottom: 20px;
@@ -357,9 +354,6 @@ export default {
 .dia-tabs {
   background-color: #fafafa;
   overflow: hidden;
-}
-.el-tabs__nav {
-  margin-left: 0 !important;
 }
 .dia-like {
   font-size: 15x;

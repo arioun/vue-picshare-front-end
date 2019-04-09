@@ -2,27 +2,19 @@
   <div id="head" class="hheader">
     <el-row>
       <el-col :lg="4" :xs="1" :sm="1" :md="1" :xl="4" class="hel-col">
-        <router-link to="/">
           <img src="../../assets/logo.png" class="hlogo" @click="show">
-        </router-link>
       </el-col>
       <el-col :lg="0" :xs="8" :sm="4" :md="4" :xl="1">&nbsp;</el-col>
       <el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1" :class="['hel-col',flag1?'active-tk':'']">
-        <router-link to="/gallery">
           <el-button type="text" class="hbtn" @click="show('/gallery')">图库</el-button>
-        </router-link>
       </el-col>
       <el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1">&nbsp;</el-col>
       <el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1" :class="['hel-col',flag2?'active-sq':'']">
-        <router-link to="/community">
           <el-button type="text" class="hbtn" @click="show('/community')">社区</el-button>
-        </router-link>
       </el-col>
       <el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1">&nbsp;</el-col>
       <el-col :lg="2" :xs="2" :sm="2" :md="2" :xl="2" :class="['hel-col',flag3?'active-fb':'']">
-        <router-link to="/publish">
           <el-button type="text" class="hbtn" @click="show('/publish')">发布作品</el-button>
-        </router-link>
       </el-col>
       <el-col :xs="2" :sm="8" :md="9" :lg="11" :xl="13">&nbsp;</el-col>
       <el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1" class="hbtn1 hel-col">
@@ -91,30 +83,35 @@ export default {
     show(data) {
       this.comName = data;
       if (this.comName == "/gallery") {
-        (this.flag1 = true),
-          (this.flag2 = false),
-          (this.flag3 = false),
-          (this.flag4 = false);
+        this.$router.push({path:'/gallery'});
+        this.flag1 = true;
+        this.flag2 = false;
+        this.flag3 = false;
+        this.flag4 = false;
       } else if (this.comName == "/community") {
-        (this.flag1 = false),
-          (this.flag2 = true),
-          (this.flag3 = false),
-          (this.flag4 = false);
+        this.$router.push({path:'/community'});
+        this.flag1 = false;
+        this.flag2 = true;
+        this.flag3 = false;
+        this.flag4 = false;
       } else if (this.comName == "/publish") {
-        (this.flag1 = false),
-          (this.flag2 = false),
-          (this.flag3 = true),
-          (this.flag4 = false);
+        this.$router.push({path:'/publish'});
+        this.flag1 = false;
+        this.flag2 = false;
+        this.flag3 = true;
+        this.flag4 = false;
       } else if (this.comName == "/notice") {
-        (this.flag1 = false),
-          (this.flag2 = false),
-          (this.flag3 = false),
-          (this.flag4 = true);
+        this.$router.push({path:'/notice'});
+        this.flag1 = false;
+        this.flag2 = false;
+        this.flag3 = false;
+        this.flag4 = true;
       } else {
-        (this.flag1 = false),
-          (this.flag2 = false),
-          (this.flag3 = false),
-          (this.flag4 = false);
+        this.$router.push({path:'/'});
+        this.flag1 = false;
+        this.flag2 = false;
+        this.flag3 = false;
+        this.flag4 = false;
       }
     },
     dialogswitch(data) {
@@ -137,7 +134,7 @@ export default {
       this.user = false;
     },
     setting(){
-
+      this.$router.push({path:'/user'})
     },
     dropcommand(data){
       if (data=="logout") {
@@ -150,59 +147,59 @@ export default {
   created() {
     this.comName = this.$route.path;
     if (/gallery/g.test(this.comName)) {
-      (this.flag1 = true),
-        (this.flag2 = false),
-        (this.flag3 = false),
-        (this.flag4 = false);
+      this.flag1 = true;
+      this.flag2 = false;
+      this.flag3 = false;
+      this.flag4 = false;
     } else if (/community/g.test(this.comName)) {
-      (this.flag1 = false),
-        (this.flag2 = true),
-        (this.flag3 = false),
-        (this.flag4 = false);
+      this.flag1 = false;
+      this.flag2 = true;
+      this.flag3 = false;
+      this.flag4 = false;
     } else if (/publish/g.test(this.comName)) {
-      (this.flag1 = false),
-        (this.flag2 = false),
-        (this.flag3 = true),
-        (this.flag4 = false);
+      this.flag1 = false;
+      this.flag2 = false;
+      this.flag3 = true;
+      this.flag4 = false;
     } else if (/notice/g.test(this.comName)) {
-      (this.flag1 = false),
-        (this.flag2 = false),
-        (this.flag3 = false),
-        (this.flag4 = true);
+      this.flag1 = false;
+      this.flag2 = false
+      this.flag3 = false;
+      this.flag4 = true;
     } else {
-      (this.flag1 = false),
-        (this.flag2 = false),
-        (this.flag3 = false),
-        (this.flag4 = false);
+      this.flag1 = false;
+      this.flag2 = false;
+      this.flag3 = false;
+      this.flag4 = false;
     }
   },
   watch: {
     '$route':function(to,from){
       if (/gallery/g.test(to.path)) {
-      (this.flag1 = true),
-        (this.flag2 = false),
-        (this.flag3 = false),
-        (this.flag4 = false);
+      this.flag1 = true;
+      this.flag2 = false;
+      this.flag3 = false;
+      this.flag4 = false;
     } else if (/community/g.test(to.path)) {
-      (this.flag1 = false),
-        (this.flag2 = true),
-        (this.flag3 = false),
-        (this.flag4 = false);
+      this.flag1 = false;
+      this.flag2 = true;
+      this.flag3 = false;
+      this.flag4 = false;
     } else if (/publish/g.test(to.path)) {
-      (this.flag1 = false),
-        (this.flag2 = false),
-        (this.flag3 = true),
-        (this.flag4 = false);
+      this.flag1 = false;
+      this.flag2 = false;
+      this.flag3 = true;
+      this.flag4 = false;
     } else if (/notice/g.test(to.path)) {
-      (this.flag1 = false),
-        (this.flag2 = false),
-        (this.flag3 = false),
-        (this.flag4 = true);
+      this.flag1 = false;
+      this.flag2 = false;
+      this.flag3 = false;
+      this.flag4 = true;
     } else {
-      (this.flag1 = false),
-        (this.flag2 = false),
-        (this.flag3 = false),
-        (this.flag4 = false);
+      this.flag1 = false;
+      this.flag2 = false;
+      this.flag3 = false;
+      this.flag4 = false;
     }
     }
   }, 
@@ -223,6 +220,7 @@ export default {
   width: 10rem;
   padding-left: 0.5rem;
   float: left;
+  cursor: pointer;
 }
 .huser {
   padding-top: 8px;
