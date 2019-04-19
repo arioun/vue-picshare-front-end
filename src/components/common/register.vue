@@ -19,16 +19,6 @@
           </el-col>
         </el-row>
       </el-form-item>
-      <el-form-item>
-          <el-input
-          v-model="yzm"
-          autocomplete="off"
-          placeholder="输入验证码"
-          class="passwd"
-        >
-          <el-button type="text" slot="append">发送验证码</el-button>
-        </el-input>
-      </el-form-item>
       <el-form-item prop="pass">
         <el-input
           v-model="ruleForm.pass" autocomplete="off" type="password"  placeholder="输入密码" class="re-passwd">
