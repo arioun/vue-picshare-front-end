@@ -10,7 +10,7 @@
             <el-button type="text" @click="show('myfollow')">关注</el-button>
           </el-col>
           <el-col :span="2" :offset="5" :class="['communitybtn',flag3?'com-btn-act':'']">
-              <el-button type="text" @click="show('mycommunity')">我的社区</el-button>
+              <el-button type="text" @click="show('mycommunity');showsq()">我的社区</el-button>
           </el-col>
         </el-row>
       </el-header>
@@ -31,10 +31,14 @@ export default {
       comName:this.$route.path,
       flag1:true,
       flag2:false,
-      flag3:false
+      flag3:false,
+      uid:localStorage.getItem('uid')
     };
   },
   methods: {
+    showsq(){
+      this.$router.push({path: '/community/mycommunity',query:{uid:this.uid}});
+    },
     show(data) {
       this.comName=data;
       if (/recommend/gi.test(this.comName)) {
@@ -49,7 +53,6 @@ export default {
       this.flag3=false
     }
     else if(/mycommunity/gi.test(this.comName)){
-      this.$router.push({path:'/community/mycommunity'});
       this.flag1=false,
       this.flag2=false,
       this.flag3=true

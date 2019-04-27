@@ -1,9 +1,9 @@
 <template>
   <div class="gz">
-    <div class="gz-card" v-for="item of items" :key="item.id">
+    <div class="gz-card" v-for="item of items" :key="item.cid">
       <el-row type="flex" class="gz-row" justify="center">
         <el-col :span="24">
-          <img :src="item.url" class="gz-pic">
+          <img :src="item.position" class="gz-pic">
         </el-col>
       </el-row>
       <!--author-->
@@ -92,154 +92,26 @@ export default {
   name: "guanzhu",
   data() {
     return {
-      
-      items: [
-        {
-          id: 0,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url: "https://xieranmaya.github.io/images/cats/photo-103450229.jpg",
-          width: 675,
-          height: 900,
-          flag:false
-        },
-        {
-          id: 1,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url: "https://xieranmaya.github.io/images/cats/photo-108273877.jpg",
-          width: 1170,
-          height: 780,
-          flag:false
-        },
-        {
-          id: 2,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url: "https://xieranmaya.github.io/images/cats/photo-115203323.jpg",
-          width: 1170,
-          height: 780,
-          flag:false
-        },
-        {
-          id: 3,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url: "https://xieranmaya.github.io/images/cats/photo-23583825.jpg",
-          width: 2048,
-          height: 1536,
-          flag:false
-        },
-        {
-          id: 4,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-123942383.jpg",
-          width: 2000,
-          height: 1333,
-          flag:false
-        },
-        {
-          id: 5,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-124559545.jpg",
-          width: 2000,
-          height: 1333,
-          flag:false
-        },
-        {
-          id: 6,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-132046989.jpg",
-          width: 1170,
-          height: 780,
-          flag:false
-        },
-        {
-          id: 7,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-132118343.jpg",
-          width: 2000,
-          height: 1339,
-          flag:false
-        },
-        {
-          id: 8,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-132311221.jpg",
-          width: 1920,
-          height: 1080,
-          flag:false
-        },
-        {
-          id: 9,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-132586903.jpg",
-          width: 2000,
-          height: 1334,
-          flag:false
-        },
-        {
-          id: 10,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-135203031.jpg",
-          width: 1000,
-          height: 668,
-          flag:false
-        }
-      ]
+      items: [],
+      uid:localStorage.getItem('uid')
     }
   },
   methods: {
    showmore(id){
       this.items[id].flag=true;
     },
+    getdata(){
+      this.$http.post('/api/commentList',{uid:this.uid},{emulateJSON:true})
+      .then(res=>{
+        this.items = Object.assign(res.body);
+      })
+    },
+    getuserinfo(uid){
+      this.$http.post('/api/basicInfo',{uid:uid},{emulateJSON:true})
+      .then(res=>{
+
+      })
+    }
   },
   created () {
     

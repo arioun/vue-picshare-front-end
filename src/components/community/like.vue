@@ -1,62 +1,61 @@
 <template>
   <div class="like">
-    <div
-      class="like-div"
-      v-for="(img) in items"
-      :key="img.id"
-      :style="{width:img.width*200/img.height+'px',flexGrow:img.width*200/img.height}"
-    >
-      <div
-        class="like-img"
-        :style="{backgroundImage:'url('+img.url+')',backgroundRepeat:'no-repeat',backgroundPosition:'center',backgroundSize:'cover',width:'100%',height:'100%'}"
-      ></div>
-      <div class="like-shadow">
-        <div class="like-det">
-          <el-button type="text" @click="show(img)">查看详情</el-button>
-        </div>
-        <div class="like-btn">
-          <el-button type="text">取消点赞</el-button>
-        </div>
-        <div class="like-lc">{{img.like}}喜欢/{{img.comments}}评论</div>
+    <el-row type="flex" justify="center">
+      <el-col :span="23">
+        <waterfall class="like-div" :col="col" :width="itemWidth" :gutterWidth="gutterWidth" :data="imgs" @loadmore="loadmore"
+      @scroll="scroll">
+      <template>
+        <div class="like-item" v-for="img in imgs" :key="img[0].pid">
+          <div class="like-img">
+            <img :src="img[0].position">
+          </div>
+          <div class="like-shadow">
+          <div class="like-det">
+            <el-button type="text" @click="show(img);getuserinfo(img[0].uid)">查看详情</el-button>
+          </div>
+          <div class="like-line">
+            <div class="like-lc">{{img[0].like_num}}喜欢/555评论</div>
+            <div class="my-work-space"></div>
+            <div class="like-btn"><el-button type="text" @click="deletelike(img[0].pid)">取消点赞</el-button></div>
+          </div>
       </div>
-      <i :style="{paddingBottom:img.height/img.width*100+'%'}"></i>
-    </div>
+        </div>
+      </template>
+    </waterfall>
+      </el-col>
+    </el-row>
 
-    <el-dialog :visible.sync="dialogVisible" width="70%">
-      <div class="diahead">
-        <div class="diahead-tx">
-          <img :src="diaitem.tx">
+    <el-dialog :visible.sync="dialogVisible" width="70%" class="like-dia">
+      <div class="like-diahead">
+        <div class="like-diahead-tx">
+          <img :src="useritem.head_image">
         </div>
-        <div class="diahead-name" v-text="diaitem.username"></div>
-        <el-button size="medium" class="diahead-btn" type="success">关注</el-button>
+        <div class="like-diahead-name">{{useritem.username?useritem.username:'注册用户'}}</div>
+        <el-button size="medium" class="like-diahead-btn" type="success">关注</el-button>
       </div>
-      <div class="dia-cont">
-        <img :src="diaitem.url">
+      <div class="like-dia-cont">
+        <img :src="diaitem.position">
       </div>
-      <div class="dia-text" v-text="diaitem.text"></div>
+      <div class="like-dia-text" v-text="diaitem.description"></div>
       <el-tabs v-model="activeName">
-        <el-tab-pane :label="'热度('+diaitem.like+')'" name="hot">
-          <div class="dia-tabs">
-            <div class="hot" v-for="o in 5" :key="o">
-              <div class="hot-tx">
+        <el-tab-pane :label="'热度('+diaitem.like_num+')'" name="hot">
+          <div class="like-dia-tabs">
+            <div class="like-hot" v-for="o in 5" :key="o">
+              <div class="like-hot-tx">
                 <img :src="diaitem.tx">
               </div>
-              <div class="hot-name" v-text="diaitem.username"></div>喜欢此图片
+              <div class="like-hot-name" v-text="diaitem.username"></div>喜欢此图片
             </div>
           </div>
         </el-tab-pane>
         <el-tab-pane :label="'评论('+diaitem.comments+')'" name="comments">
-          <div class="dia-tabs">
-            <div class="dia-comment">
-              <el-input class="dia-input" v-model="comment" placeholder="请输入内容"></el-input>
-              <el-button class="dia-btn" type="primary">发 布</el-button>
-            </div>
-            <div class="hot" v-for="o in 5" :key="o">
-              <div class="hot-tx">
-                <img :src="diaitem.tx">
+          <div class="like-dia-tabs">
+            <div class="like-hot" v-for="o in 5" :key="o">
+              <div class="like-hot-tx">
+                <img :src="avatar">
               </div>
-              <div class="hot-name" v-text="diaitem.username"></div>
-              <div class="coms-com" v-text="diaitem.text"></div>
+              <div class="like-hot-name">注册用户</div>
+              <div class="like-coms-com"></div>
             </div>
           </div>
         </el-tab-pane>
@@ -71,156 +70,71 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      diaitem: [],
       activeName: "comments",
+      avatar:'http://188.131.192.194/head_images/5LSk0zVtyKDq9UciiWPab50dwjoNI2324KtwSyBD.jpeg',
       comment: "",
-      items: [
-        {
-          id: 0,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url: "https://xieranmaya.github.io/images/cats/photo-103450229.jpg",
-          width: 675,
-          height: 900,
-          flag: false
-        },
-        {
-          id: 1,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url: "https://xieranmaya.github.io/images/cats/photo-108273877.jpg",
-          width: 1170,
-          height: 780,
-          flag: false
-        },
-        {
-          id: 2,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url: "https://xieranmaya.github.io/images/cats/photo-115203323.jpg",
-          width: 1170,
-          height: 780,
-          flag: false
-        },
-        {
-          id: 3,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url: "https://xieranmaya.github.io/images/cats/photo-23583825.jpg",
-          width: 2048,
-          height: 1536,
-          flag: false
-        },
-        {
-          id: 4,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-123942383.jpg",
-          width: 2000,
-          height: 1333,
-          flag: false
-        },
-        {
-          id: 5,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-124559545.jpg",
-          width: 2000,
-          height: 1333,
-          flag: false
-        },
-        {
-          id: 6,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-132046989.jpg",
-          width: 1170,
-          height: 780,
-          flag: false
-        },
-        {
-          id: 7,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-132118343.jpg",
-          width: 2000,
-          height: 1339,
-          flag: false
-        },
-        {
-          id: 8,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-132311221.jpg",
-          width: 1920,
-          height: 1080,
-          flag: false
-        },
-        {
-          id: 9,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-132586903.jpg",
-          width: 2000,
-          height: 1334,
-          flag: false
-        },
-        {
-          id: 10,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-135203031.jpg",
-          width: 1000,
-          height: 668,
-          flag: false
-        }
-      ]
+      col:5,
+      uid:this.$route.query.uid,
+      imgs:[],
+      diaitem: [],
+      useritem:[],
     };
   },
+  created(){
+    this.getmylike()
+  },
+  computed: {
+    itemWidth() {
+      return 138 * 0.5 * (document.documentElement.clientWidth /310);
+    },
+    gutterWidth() {
+      return 9 * 0.5 * (document.documentElement.clientWidth /400);
+    }
+  },
   methods: {
-    show(item) {
+    scroll(scrollData) {
+    },
+    loadmore(index) {
+    },
+    getmylike(){
+      this.$http.post('/api/like',{uid:this.uid},{emulateJSON:true})
+      .then(res=>{
+        this.imgs = Object.assign(res.body);
+        console.log(this.imgs);
+      })
+    },
+    deletelike(pid){
+      this.$http.post('/api/pictureLikeDelete',{uid:this.uid,pid:pid},{emulateJSON:true})
+      .then(res=>{
+        if (res.body.message=="取消点赞成功") {
+          this.$message({
+              message: "取消点赞成功",
+              type: "success",
+              customClass: "zIndex"
+            });
+          this.getmylike()
+        }else{
+          this.$message({
+              message: "取消点赞失败",
+              type: "danger",
+              customClass: "zIndex"
+            });
+        }
+      })
+    },
+    getuserinfo(uid){
+      this.$http.post('/api/basicInfo',{uid:uid},{emulateJSON:true})
+      .then(res=>{
+        this.useritem = Object.assign(res.body[0]);
+        console.log(this.useritem);
+      })
+    },
+    follow(uid){
+
+    },
+    show(img) {
+      this.diaitem = img;
       this.dialogVisible = true;
-      this.diaitem = item;
     }
   }
 };
@@ -231,30 +145,23 @@ export default {
   min-height: 300px;
   height: auto;
   display: flex;
-  flex-wrap: wrap;
-  width: 95%;
+  width: auto;
   margin: 0 auto;
-}
-.like:after {
-  content: "";
-  flex-grow: 999999999;
 }
 
 .like-div {
-  margin: 2px;
-  background-color: violet;
+  margin: 20px auto;
+}
+.like-item{
+  text-align: center;
+  margin-bottom: 20px;
   position: relative;
-  overflow: hidden;
 }
-.like-div i {
-  display: block;
+.like-img img{
+  width: 100%;
+  height: 100%;
 }
-.like-img {
-  transition: all 0.6s;
-}
-.like-img:hover {
-  transform: scale(1.2);
-}
+
 .like-shadow {
   position: absolute;
   top: 0;
@@ -271,28 +178,33 @@ export default {
 }
 .like-det {
   color: #fff;
-  position: relative;
-  top: 40%;
+  position: absolute;
+  top: 35%;
   left: 40%;
 }
 .like-det span {
   color: #fff;
 }
-.like-btn {
-  position: relative;
-  top: 62%;
-  left: 80%;
-}
-.like-btn span {
-  color: #fff;
-  font-size: 12px;
+.like-line{
+  position: absolute;
+  top: 75%;
+  width: 100%;
 }
 .like-lc {
   color: #fff;
   font-size: 12px;
-  position: relative;
-  top: 50%;
-  left: 5%;
+  display: inline-block;
+}
+.my-work-space{
+  display: inline-block;
+  width: 50%;
+}
+.like-btn {
+  display: inline-block;
+}
+.like-btn span {
+  color: #fff;
+  font-size: 12px;
 }
 
 .el-dialog__body {
@@ -301,85 +213,93 @@ export default {
 .el-tabs__content {
   padding: 0 !important;
 }
-.diahead {
+
+.like-diahead {
   height: 50px;
   margin-bottom: 20px;
 }
-.diahead-tx {
+.like-diahead-tx {
   width: 50px;
   height: 50px;
   display: inline-block;
   text-align: center;
 }
-.diahead-tx img {
+.like-diahead-tx img {
   width: 100%;
   height: 100%;
   vertical-align: middle;
 }
-.diahead-name {
+.like-diahead-name {
   width: auto;
   margin: auto 30px;
   font-size: 20px;
   text-align: center;
   display: inline-block;
 }
-.diahead-btn {
+.like-diahead-btn {
   display: inline-block;
 }
-.dia-cont {
+.like-dia-cont {
   margin: 0 auto;
   width: auto;
   height: auto;
   text-align: center;
 }
-.dia-text {
-  margin: 50px 0 0 20px;
+.like-dia-cont img{
+  width: 100%;
+  height: 100%;
+}
+.like-dia-text {
+  margin: 0px 0 0 20px;
   display: inline-block;
   font-family: "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", tahoma, arial,
     simsun, "宋体";
   font-size: 1rem;
   color: #444;
 }
-.dia-tabs {
+.like-dia-tabs {
   background-color: #fafafa;
   overflow: hidden;
 }
-.hot {
+.like-dia-like {
+  font-size: 15x;
+  text-align: center;
+  float: right;
+}
+.like-hot {
   border-bottom: 1px solid #e7e7e7;
   padding: 10px 0 10px 10px;
   font-size: 12px;
 }
-.hot-tx {
+.like-hot-tx {
   display: inline-block;
   width: 30px;
   height: 30px;
   text-align: center;
 }
-.hot-tx img {
+.like-hot-tx img {
   width: 100%;
   height: 100%;
   vertical-align: middle;
 }
-.hot-name {
+.like-hot-name {
   display: inline-block;
   margin: 0 10px;
   color: #7594b3;
 }
-.coms-com {
+.like-coms-com {
   display: inline-block;
 }
-.dia-comment {
+.like-dia-comment {
   margin: 10px auto;
   width: 800px;
 }
-.dia-input {
+.like-dia-input {
   display: inline-block;
   width: 700px;
 }
-.dia-btn {
+.like-dia-btn {
   display: inline-block;
   margin-left: 10px;
 }
 </style>
-
-

@@ -3,12 +3,12 @@
     <el-main class="fb-main">
       <el-upload
         class="fb-upload"
-        action="https://jsonplaceholder.typicode.com/posts/"
+        action=""
         list-type="picture-card"
         :on-preview="handlePictureCardPreview"
-        :on-remove="handleRemove"
+        :on-change="imgchange"
         :auto-upload="false"
-        :limit="6"
+        :limit="1"
         :file-list="fileList"
         :on-exceed="maxnum"
         accept=".jpg, .jpeg, .png, .JPG, .JPEG"
@@ -24,8 +24,6 @@
       </el-dialog>
     </el-main>
     <el-aside width="30%" class="fb-aside">
-      <h5 class="fb-title">标题</h5>
-      <el-input class="fb-width" v-model="title"></el-input>
       <h5 class="fb-title">作品描述</h5>
       <el-input
         class="fb-width"
@@ -57,12 +55,12 @@
       <el-tag :key="tag" v-for="tag in dynamicTags" closable :disable-transitions="false" @close="handleClose(tag)">{{tag}}</el-tag>
       <el-input class="input-new-tag" v-if="inputVisible" v-model="inputValue" ref="saveTagInput" size="mini"
         @keyup.enter.native="handleInputConfirm(inputValue)"></el-input>
-      <el-button class="button-new-tag" size="small" @click="showInput" v-if="dynamicTags.length<10">+</el-button>
+      <el-button class="button-new-tag" size="small" @click="showInput" v-if="dynamicTags.length<5">+</el-button>
       <ul class="fb-ult">
         <li class="fb-li-left">(输入标签内容回车即可添加标签)</li>
-        <li class="fb-li-right">{{dynamicTags.length}}/10</li>
+        <li class="fb-li-right">{{dynamicTags.length}}/5</li>
       </ul>
-      <el-button class="fb-btn" plain>发&nbsp;&nbsp;&nbsp;布</el-button>
+      <el-button class="fb-btn" @click="fabu()" plain>发&nbsp;&nbsp;&nbsp;布</el-button>
     </el-aside>
   </el-container>
 </template>
@@ -72,16 +70,18 @@ export default {
   name: "fabu",
   data() {
     return {
+      uid:localStorage.getItem('uid'),
       dynamicTags: [],
-        inputVisible: false,
-        inputValue: '',
+      inputVisible: false,
+      inputValue: '',
       dialogImageUrl: "",
       dialogVisible: false,
       fileList: [],
-      title: "",
       description: "",
       tag: "",
-      tagList: [],
+      imgurl:'',
+      width:'',
+      height:'',
       categories: [
         {
           id: 0,
@@ -127,7 +127,6 @@ export default {
     };
   },
   methods: {
-    handleRemove(file, fileList) {},
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
@@ -135,28 +134,36 @@ export default {
     submitUpload() {
       this.$refs.upload.submit();
     },
-    maxnum() {
-      this.$alert("最多只能上传6张图片", {
-        confirmButtonText: "确定",
-        callback: action => {
-          this.$message({
-            type: "info",
-            message: `action: ${action}`
-          });
+    imgchange(file,fileList){
+      console.log(file.raw);
+      let img = new FormData()
+      img.append('file', file.raw)
+      this.$http.post('/api/upload',img)
+      .then(res=>{
+        console.log(res.body);
+        if (res.body.message=="上传成功") {
+          this.imgurl=res.body.image;
+          this.width=res.body.weight;
+          this.height=res.body.height;
         }
+      })
+    },
+    maxnum() {
+      this.$message({
+              message: "最多只能上传1张图片",
+              type: "warning",
+              customClass: "zIndex"
       });
     },
     handleClose(tag) {
         this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
       },
-
       showInput() {
         this.inputVisible = true;
         this.$nextTick(_ => {
           this.$refs.saveTagInput.$refs.input.focus();
         });
       },
-
       handleInputConfirm(inputValue) {
         let flag=false;
         for (let i = 0; i < this.dynamicTags.length; i++) {
@@ -173,6 +180,32 @@ export default {
           this.inputValue = '';
         }
       },
+    fabu(){
+      let tags=this.dynamicTags.toString();
+     this.$http.post('/api/pictureUpload',{uid:this.uid,position:this.imgurl,type_name:tags,
+      description:this.description,weight:this.width,height:this.height},{emulateJSON:true})
+      .then(res=>{
+        if (res.body.message=="添加成功") {
+          this.$message({
+              message: "发布成功",
+              type: "success",
+              customClass: "zIndex"
+            });
+          this.description='';
+          this.dynamicTags=[];
+          this.fileList=[];
+          this.imgurl='';
+          this.width='';
+          this.height='';
+        }else{
+          this.$message({
+              message: "发布失败",
+              type: "danger",
+              customClass: "zIndex"
+            });
+        }
+      })
+    }
   }
 };
 </script>
@@ -215,6 +248,7 @@ export default {
 }
 .fb-title {
   margin-left: 10px;
+  
 }
 .fb-width {
   text-align: center;
@@ -264,7 +298,7 @@ textarea {
   clear: both;
   width: 60%;
   display: block !important;
-  margin: 5% auto !important;
+  margin:  150px auto 0 auto !important;
   background-color: #d1b200 !important;
   color: #ffffff !important;
   font-size: 16px !important;

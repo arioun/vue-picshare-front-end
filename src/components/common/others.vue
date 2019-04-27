@@ -1,6 +1,6 @@
 <template>
   <div class="sq">
-    <div class="head">
+    <div class="oth-head">
       <div class="head-bg">
         <ul class="sq-ul">
           <li class="sq-tx">
@@ -185,7 +185,7 @@ export default {
   min-height: 600px;
   height: auto;
 }
-.head {
+.oth-head {
   height: 350px;
   width: 100%;
   background: url("../../assets/shequ-bg.jpg") no-repeat;

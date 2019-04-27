@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import myindex from "./components/common/index.vue"
 import fabu from './components/common/fabu.vue'
 import others from './components/common/others.vue'
+import upload from './components/common/upload.vue'
 
 import gallery from './components/gallery/gallery.vue'
 import search from './components/gallery/search.vue'
@@ -36,6 +37,10 @@ export default new Router({
       component: myindex,
     },
     {
+      path: '/upload',
+      component: upload,
+    },
+    {
       path: '/gallery',
       component: gallery
     },
@@ -45,7 +50,6 @@ export default new Router({
     },
     {
       path:'/community/others',
-      name:'others',
       component:others,
       children:[{
         path: '/',
@@ -117,6 +121,7 @@ export default new Router({
             },
             {
               path: 'myalbum',
+              name:'myalbum',
               component: myalbum
             },
             {
@@ -162,13 +167,8 @@ export default new Router({
     },
     {
       path:'/user',
-      name:'user',
       component: user,
       children:[
-        {
-          path:'/',
-          component:profile
-        },
         {
           path:'profile',
           name:'profile',

@@ -1,36 +1,47 @@
 <template>
-  <div>
-    <div class="aldetail-head">
-      <el-button size="mini" class="aldetail-head-btn">上传图片</el-button>
-    </div>
+  <div class="detail-body">
     <div class="aldetail">
-      <div
-        class="aldetail-div"
-        v-for="(img) in items"
-        :key="img.id"
-        :style="{width:img.width*200/img.height+'px',flexGrow:img.width*200/img.height}"
-      >
-        <div
-          class="aldetail-img"
-          :style="{backgroundImage:'url('+img.url+')',backgroundRepeat:'no-repeat',backgroundPosition:'center',backgroundSize:'cover',width:'100%',height:'100%'}"
-        ></div>
-        <div class="aldetail-shadow">
-          <div class="aldetail-det">
-            <el-button type="text" @click="show(img)">查看详情</el-button>
+      <el-row type="flex" justify="center">
+        <el-col :span="23">
+          <div class="aldetail-head" v-if="my">
+            <input type="file" @change="changeimg($event)" ref="imgInput" style="display:none;">
+            <el-button size="mini" class="aldetail-head-btn" @click="uploadimg">上传图片</el-button>
           </div>
-          <div class="aldetail-btn">
-            <el-button type="text">删除</el-button>
-          </div>
-        </div>
-        <i :style="{paddingBottom:img.height/img.width*100+'%'}"></i>
-      </div>
-
-      <el-dialog :visible.sync="dialogVisible" width="70%">
-        <div class="dia-cont">
-          <img :src="diaitem.url">
-        </div>
-      </el-dialog>
+          <waterfall
+            class="aldetail-div"
+            :col="col"
+            :width="itemWidth"
+            :gutterWidth="gutterWidth"
+            :data="imgs"
+            @loadmore="loadmore"
+            @scroll="scroll"
+          >
+            <template>
+              <div class="aldetail-item" v-for="img in imgs" :key="img.id">
+                <div class="aldetail-img">
+                  <img :src="img.position">
+                </div>
+                <div class="aldetail-shadow">
+                  <div class="aldetail-det">
+                    <el-button type="text" @click="show(img)">查看详情</el-button>
+                  </div>
+                  <div class="aldetail-line">
+                    <div class="aldetail-btn">
+                      <el-button type="text" @click="deletedetail(img.pid)">删除</el-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </waterfall>
+        </el-col>
+      </el-row>
     </div>
+    <el-dialog :visible.sync="dialogVisible" width="70%">
+      <div class="colec-dia-cont">
+        <img :src="diaitem.position">
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -42,150 +53,99 @@ export default {
       dialogVisible: false,
       diaitem: [],
       activeName: "comments",
-      items: [
-        {
-          id: 0,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url: "https://xieranmaya.github.io/images/cats/photo-103450229.jpg",
-          width: 675,
-          height: 900,
-          flag: false
-        },
-        {
-          id: 1,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url: "https://xieranmaya.github.io/images/cats/photo-108273877.jpg",
-          width: 1170,
-          height: 780,
-          flag: false
-        },
-        {
-          id: 2,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url: "https://xieranmaya.github.io/images/cats/photo-115203323.jpg",
-          width: 1170,
-          height: 780,
-          flag: false
-        },
-        {
-          id: 3,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url: "https://xieranmaya.github.io/images/cats/photo-23583825.jpg",
-          width: 2048,
-          height: 1536,
-          flag: false
-        },
-        {
-          id: 4,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-123942383.jpg",
-          width: 2000,
-          height: 1333,
-          flag: false
-        },
-        {
-          id: 5,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-124559545.jpg",
-          width: 2000,
-          height: 1333,
-          flag: false
-        },
-        {
-          id: 6,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-132046989.jpg",
-          width: 1170,
-          height: 780,
-          flag: false
-        },
-        {
-          id: 7,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-132118343.jpg",
-          width: 2000,
-          height: 1339,
-          flag: false
-        },
-        {
-          id: 8,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-132311221.jpg",
-          width: 1920,
-          height: 1080,
-          flag: false
-        },
-        {
-          id: 9,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-132586903.jpg",
-          width: 2000,
-          height: 1334,
-          flag: false
-        },
-        {
-          id: 10,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-135203031.jpg",
-          width: 1000,
-          height: 668,
-          flag: false
-        }
-      ]
+      gid: this.$route.query.gid,
+      uid: this.$route.query.uid,
+      my: this.$route.query.my,
+      col: 5,
+      imgs: []
     };
   },
+  created() {
+    this.getalbumdetail();
+  },
+  computed: {
+    itemWidth() {
+      return 138 * 0.5 * (document.documentElement.clientWidth / 310);
+    },
+    gutterWidth() {
+      return 9 * 0.5 * (document.documentElement.clientWidth / 400);
+    }
+  },
   methods: {
+    changeimg(e) {
+      var file = e.target.files[0];
+      var image = new FormData();
+      image.append("file", file);
+      this.$http.post("/api/upload", image).then(res => {
+        console.log(res);
+        if (res.body.message == "上传成功") {
+          this.galleryUpload(res.body.image, res.body.weight, res.body.height);
+        }
+      });
+    },
+    uploadimg() {
+      this.$refs.imgInput.click();
+    },
+    galleryUpload(pos, width, height) {
+      this.$http
+        .post(
+          "/api/galleryUpload",
+          {
+            uid: this.uid,
+            gid: this.gid,
+            position: pos,
+            weight: width,
+            height: height,
+            description: ""
+          },
+          { emulateJSON: true }
+        )
+        .then(res => {
+          if (res.body.message == "添加成功") {
+            this.$message({
+              message: "添加成功",
+              type: "success",
+              customClass: "zIndex"
+            });
+            this.getalbumdetail();
+          } else {
+            this.$message({
+              message: "添加失败",
+              type: "success",
+              customClass: "zIndex"
+            });
+          }
+        });
+    },
+    scroll(scrollData) {},
+    loadmore(index) {},
+    getalbumdetail() {
+      this.$http
+        .post("/api/galleryDetail", { gid: this.gid }, { emulateJSON: true })
+        .then(res => {
+          this.imgs = Object.assign(res.body.list);
+        });
+    },
+    deletedetail(pid) {
+      this.$http
+        .post("/api/delete", { uid: this.uid, pid: pid }, { emulateJSON: true })
+        .then(res => {
+          if (res.body.message == "删除成功") {
+            this.$message({
+              message: "删除成功",
+              type: "success",
+              customClass: "zIndex"
+            });
+            this.getalbumdetail();
+          } else {
+            this.$message({
+              message: "删除失败",
+              type: "warning",
+              customClass: "zIndex"
+            });
+          }
+        });
+    },
     show(item) {
       this.dialogVisible = true;
       this.diaitem = item;
@@ -195,11 +155,19 @@ export default {
 </script>
 
 <style>
+.detail-body {
+  min-height: 300px;
+  height: auto;
+  display: flex;
+  width: auto;
+  margin: 0 auto;
+}
 .aldetail-head {
   display: block;
-  margin: 10px 0;
+  margin: 10px auto;
+  float: right;
   position: relative;
-  right: -91.4%;
+  left: -0.8%;
 }
 .aldetail-head-btn {
   margin-top: 8px;
@@ -209,32 +177,23 @@ export default {
   color: #d1b200 !important;
 }
 .aldetail {
-  min-height: 300px;
   height: auto;
-  display: flex;
-  flex-wrap: wrap;
-  width: 95%;
+  width: auto;
   margin: 0 auto;
 }
-.aldetail:after {
-  content: "";
-  flex-grow: 999999999;
-}
 .aldetail-div {
-  margin: 2px;
-  background-color: violet;
+  margin: 20px auto;
+}
+.aldetail-item {
+  text-align: center;
+  margin-bottom: 20px;
   position: relative;
-  overflow: hidden;
 }
-.aldetail-div i {
-  display: block;
+.aldetail-img img {
+  width: 100%;
+  height: 100%;
 }
-.aldetail-img {
-  transition: all 0.6s;
-}
-.aldetail-img:hover {
-  transform: scale(1.2);
-}
+
 .aldetail-shadow {
   position: absolute;
   top: 0;
@@ -251,28 +210,33 @@ export default {
 }
 .aldetail-det {
   color: #fff;
-  position: relative;
-  top: 40%;
+  position: absolute;
+  top: 35%;
   left: 40%;
 }
 .aldetail-det span {
   color: #fff;
 }
-.aldetail-btn {
-  position: relative;
-  top: 65%;
-  left: 85%;
-}
-.aldetail-btn span {
-  color: #fff;
-  font-size: 12px;
+.aldetail-line {
+  position: absolute;
+  top: 75%;
+  width: 100%;
 }
 .aldetail-lc {
   color: #fff;
   font-size: 12px;
-  position: relative;
-  top: 55%;
-  left: 5%;
+  display: inline-block;
+}
+.my-work-space {
+  display: inline-block;
+  width: 50%;
+}
+.aldetail-btn {
+  display: inline-block;
+}
+.aldetail-btn span {
+  color: #fff;
+  font-size: 12px;
 }
 
 .el-dialog__body {
@@ -282,7 +246,7 @@ export default {
   padding: 0 !important;
 }
 
-.dia-cont {
+.detail-dia-cont {
   margin: 0 auto;
   width: auto;
   height: auto;

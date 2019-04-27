@@ -9,7 +9,6 @@
             <router-link to="gallery">
               <el-button icon="el-icon-arrow-right" type="primary"></el-button>
             </router-link>
-          
         </el-col>
       </el-row>
       <el-row>

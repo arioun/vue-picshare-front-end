@@ -1,10 +1,9 @@
 <template>
   <div>
     <el-form label-width="80px" class="re-dialog-form" :model="ruleForm" status-icon :rules="rules" ref="ruleForm">
-      <el-form-item>
         <el-row>
-          <el-col :span="5">
-            <el-select v-model="retype" class="re-select">
+            <el-col :span="6">
+            <el-select v-model="retype" placeholder="请选择" class="re-select">
               <el-option
                 class="re-opt"
                 v-for="item in options"
@@ -15,10 +14,17 @@
             </el-select>
           </el-col>
           <el-col :span="18">
-            <el-input class="rename" v-model="rename" :placeholder="[retype=='手机'?'请输入手机号':'请输入邮箱号']"></el-input>
+            <el-form-item v-if="retype=='phone'" prop="phone">
+              <el-input  class="rename" v-model="ruleForm.phone" placeholder="请输入手机号"></el-input>
+          </el-form-item>
+            <el-form-item v-else-if="retype=='email'" prop="email"> 
+            <el-input class="rename" v-model="ruleForm.email" placeholder="请输入邮箱"></el-input>
+          </el-form-item>
+          
           </el-col>
+          
         </el-row>
-      </el-form-item>
+      
       <el-form-item prop="pass">
         <el-input
           v-model="ruleForm.pass" autocomplete="off" type="password"  placeholder="输入密码" class="re-passwd">
@@ -37,7 +43,7 @@
     </el-form>
     <el-row type="flex" justify="center" class="login">
       <el-col :span="23">
-        <el-button type="primary" @click="register">立即注册</el-button>
+        <el-button type="primary" @click="register('ruleForm',retype,retype=='phone'?ruleForm.phone:ruleForm.email,ruleForm.checkPass)">立即注册</el-button>
       </el-col>
     </el-row>
     <el-row class="zhuce-btn">
@@ -51,10 +57,25 @@
 export default {
   name: "register",
   data() {
+    var validatePhone = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('手机号不能为空'));
+        } else {
+          const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+          console.log(reg.test(value));
+          if (reg.test(value)) {
+            callback();
+          } else {
+            return callback(new Error('请输入正确的手机号'));
+          }
+        }
+      };
       var validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'));
-        } else {
+        } else if(value.length<6){
+          callback(new Error('密码不能少于6位'));
+        }else {
           if (this.ruleForm.checkPass !== '') {
             this.$refs.ruleForm.validateField('checkPass');
           }
@@ -64,33 +85,43 @@ export default {
       var validatePass2 = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请再次输入密码'));
-        } else if (value !== this.ruleForm.pass) {
+        }else if(value.length<6){
+          callback(new Error('密码不能少于6位'));
+        }
+         else if (value !== this.ruleForm.pass) {
           callback(new Error('两次输入密码不一致!'));
         } else {
           callback();
         }
       };
+
     return {
         rename:'',
-        phone:'',
-        email:'',
-      yzm:'',
-      retype: "手机",
+        retype: "phone",
       options: [
         {
-          value: "选项1",
+          value: "phone",
           label: "手机"
         },
         {
-          value: "选项2",
+          value: "email",
           label: "邮箱"
         }
       ],
       ruleForm: {
+          phone:'',
+          email:'',
           pass: '',
           checkPass: ''
         },
         rules: {
+          phone:[
+            {validator: validatePhone, trigger: 'blur'}
+          ],
+          email:[
+            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+          ],
           pass: [
             { validator: validatePass, trigger: 'blur' }
           ],
@@ -105,8 +136,15 @@ export default {
     tologin() {
       this.$emit("func", "login");
     },
-    register(){
-      this.$emit("register");
+    register(ruleForm,type,data,passwd){
+      this.$refs.ruleForm.validate((valid) => {
+          if (valid) {
+            this.$emit("register",type,data,passwd);
+          } else {
+            return false;
+          }
+        });
+      
     }
   }
 };

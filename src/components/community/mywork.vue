@@ -1,51 +1,54 @@
 <template>
   <div class="mywork">
-    <div
-      class="mywork-div"
-      v-for="(img) in items"
-      :key="img.id"
-      :style="{width:img.width*200/img.height+'px',flexGrow:img.width*200/img.height}"
-    >
-      <div
-        class="mywork-img"
-        :style="{backgroundImage:'url('+img.url+')',backgroundRepeat:'no-repeat',backgroundPosition:'center',backgroundSize:'cover',width:'100%',height:'100%'}"
-      ></div>
-      <div class="mywork-shadow">
-        <div class="mywork-det">
-          <el-button type="text" @click="show(img)">查看详情</el-button>
-        </div>
-        <div class="mywork-btn">
-          <el-button type="text">删除</el-button>
-        </div>
-        <div class="mywork-lc">{{img.like}}喜欢/{{img.comments}}评论</div>
+  <el-row type="flex" justify="center">
+      <el-col :span="23">
+        <waterfall class="mywork-div" :col="col" :width="itemWidth" :gutterWidth="gutterWidth" :data="imgs" @loadmore="loadmore"
+      @scroll="scroll">
+      <template>
+        <div class="mywork-item" v-for="img in imgs" :key="img.id">
+          <div class="mywork-img">
+            <img :src="img.position">
+          </div>
+          <div class="mywork-shadow">
+          <div class="mywork-det">
+            <el-button type="text" @click="show(img)">查看详情</el-button>
+          </div>
+          <div class="mywork-line">
+            <div class="mywork-lc">{{img.like_num}}喜欢/555评论</div>
+            <div class="my-work-space"></div>
+            <div class="mywork-btn"><el-button type="text" @click="deletepic(img.pid)">删除</el-button></div>
+          </div>
       </div>
-      <i :style="{paddingBottom:img.height/img.width*100+'%'}"></i>
-    </div>
+        </div>
+      </template>
+    </waterfall>
+      </el-col>
+    </el-row>
 
     <el-dialog :visible.sync="dialogVisible" width="70%" class="tj-dia">
-      <div class="dia-cont">
-        <img :src="diaitem.url">
+      <div class="mywork-dia-img">
+        <img :src="diaitem.position">
       </div>
-      <div class="dia-text" v-text="diaitem.text"></div>
+      <div class="mywork-dia-text" v-text="diaitem.description"></div>
       <el-tabs v-model="activeName">
-        <el-tab-pane :label="'热度('+diaitem.like+')'" name="hot">
-          <div class="dia-tabs">
-            <div class="hot" v-for="o in 5" :key="o">
-              <div class="hot-tx">
+        <el-tab-pane :label="'热度('+diaitem.like_num+')'" name="hot">
+          <div class="mywork-dia-tabs">
+            <div class="mywork-hot" v-for="o in 5" :key="o">
+              <div class="mywork-hot-tx">
                 <img :src="diaitem.tx">
               </div>
-              <div class="hot-name" v-text="diaitem.username"></div>喜欢此图片
+              <div class="mywork-hot-name" v-text="diaitem.username"></div>喜欢此图片
             </div>
           </div>
         </el-tab-pane>
         <el-tab-pane :label="'评论('+diaitem.comments+')'" name="comments">
-          <div class="dia-tabs">
-            <div class="hot" v-for="o in 5" :key="o">
-              <div class="hot-tx">
-                <img :src="diaitem.tx">
+          <div class="mywork-dia-tabs">
+            <div class="mywork-hot" v-for="o in 5" :key="o">
+              <div class="mywork-hot-tx">
+                <img :src="avatar">
               </div>
-              <div class="hot-name" v-text="diaitem.username"></div>
-              <div class="coms-com" v-text="diaitem.text"></div>
+              <div class="mywork-hot-name">注册用户</div>
+              <div class="mywork-coms-com"></div>
             </div>
           </div>
         </el-tab-pane>
@@ -62,150 +65,53 @@ export default {
       dialogVisible: false,
       diaitem: [],
       activeName: "comments",
-      items: [
-        {
-          id: 0,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url: "https://xieranmaya.github.io/images/cats/photo-103450229.jpg",
-          width: 675,
-          height: 900,
-          flag: false
-        },
-        {
-          id: 1,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url: "https://xieranmaya.github.io/images/cats/photo-108273877.jpg",
-          width: 1170,
-          height: 780,
-          flag: false
-        },
-        {
-          id: 2,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url: "https://xieranmaya.github.io/images/cats/photo-115203323.jpg",
-          width: 1170,
-          height: 780,
-          flag: false
-        },
-        {
-          id: 3,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url: "https://xieranmaya.github.io/images/cats/photo-23583825.jpg",
-          width: 2048,
-          height: 1536,
-          flag: false
-        },
-        {
-          id: 4,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-123942383.jpg",
-          width: 2000,
-          height: 1333,
-          flag: false
-        },
-        {
-          id: 5,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-124559545.jpg",
-          width: 2000,
-          height: 1333,
-          flag: false
-        },
-        {
-          id: 6,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-132046989.jpg",
-          width: 1170,
-          height: 780,
-          flag: false
-        },
-        {
-          id: 7,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-132118343.jpg",
-          width: 2000,
-          height: 1339,
-          flag: false
-        },
-        {
-          id: 8,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-132311221.jpg",
-          width: 1920,
-          height: 1080,
-          flag: false
-        },
-        {
-          id: 9,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-132586903.jpg",
-          width: 2000,
-          height: 1334,
-          flag: false
-        },
-        {
-          id: 10,
-          tx: "/img/tx6.27d6e020.jpg",
-          username: "冬眠的熊",
-          text: "月有阴晴圆缺",
-          like: "8",
-          comments: "20",
-          url:
-            "https://xieranmaya.github.io/images/cats/stock-photo-135203031.jpg",
-          width: 1000,
-          height: 668,
-          flag: false
-        }
-      ]
+      col:5,
+      uid:this.$route.query.uid,
+      avatar:'http://188.131.192.194/head_images/5LSk0zVtyKDq9UciiWPab50dwjoNI2324KtwSyBD.jpeg',
+      imgs:[]
     };
   },
+  created(){
+    this.getmywork()
+  },
+  computed: {
+    itemWidth() {
+      return 138 * 0.5 * (document.documentElement.clientWidth /310);
+    },
+    gutterWidth() {
+      return 9 * 0.5 * (document.documentElement.clientWidth /400);
+    }
+  },
   methods: {
+    scroll(scrollData) {
+    },
+    loadmore(index) {
+    },
+    getmywork(){
+    this.$http.post('/api/myPictures',{uid:this.uid},{emulateJSON:true})
+      .then(res=>{
+        this.imgs = Object.assign(res.body);
+      })
+    },
+    deletepic(pid){
+      this.$http.post('/api/delete',{uid:this.uid,pid:pid},{emulateJSON:true})
+      .then(res=>{
+        if (res.body.message=="删除成功") {
+          this.$message({
+              message: "删除成功",
+              type: "success",
+              customClass: "zIndex"
+            });
+          this.getmywork()
+        }else{
+          this.$message({
+              message: "删除失败",
+              type: "danger",
+              customClass: "zIndex"
+            });
+        }
+      })
+    },
     show(item) {
       this.dialogVisible = true;
       this.diaitem = item;
@@ -215,48 +121,27 @@ export default {
 </script>
 
 <style>
-.sq-row {
-  margin-top: 15px;
-}
-.sq-work {
-  margin-right: 20px;
-  text-align: center;
-}
-.sq-work img {
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 200px;
-  min-height: 200px;
-}
 .mywork {
   min-height: 300px;
   height: auto;
   display: flex;
   flex-wrap: wrap;
-  width: 95%;
+  width:auto;
   margin: 0 auto;
 }
-.mywork:after {
-  content: "";
-  flex-grow: 999999999;
+.mywork-div {
+  margin: 20px auto;
+}
+.mywork-item{
+  text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+}
+.mywork-img img{
+  width: 100%;
+  height: 100%;
 }
 
-.mywork-div {
-  margin: 2px;
-  background-color: violet;
-  position: relative;
-  overflow: hidden;
-}
-.mywork-div i {
-  display: block;
-}
-.mywork-img {
-  transition: all 0.6s;
-}
-.mywork-img:hover {
-  transform: scale(1.2);
-}
 .mywork-shadow {
   position: absolute;
   top: 0;
@@ -273,73 +158,80 @@ export default {
 }
 .mywork-det {
   color: #fff;
-  position: relative;
-  top: 40%;
+  position: absolute;
+  top: 35%;
   left: 40%;
 }
 .mywork-det span {
   color: #fff;
 }
+.mywork-line{
+  position: absolute;
+  top: 75%;
+  width: 100%;
+}
+.mywork-lc {
+  color: #fff;
+  font-size: 12px;
+  display: inline-block;
+}
+.my-work-space{
+  display: inline-block;
+  width: 50%;
+}
 .mywork-btn {
-  position: relative;
-  top: 65%;
-  left: 85%;
+  display: inline-block;
 }
 .mywork-btn span {
   color: #fff;
   font-size: 12px;
 }
-.mywork-lc {
-  color: #fff;
-  font-size: 12px;
-  position: relative;
-  top: 55%;
-  left: 5%;
-}
 
 .el-dialog__body {
   padding-top: 0;
 }
-.dia-cont {
-  margin: 0 auto;
+.mywork-dia-img {
+  margin: 10px auto;
   width: auto;
   height: auto;
   text-align: center;
 }
-.dia-text {
-  margin: 50px 0 0 20px;
+.mywork-dia-img img{
+  width: 100%;
+  height: 100%;
+}
+.mywork-dia-text {
+  margin: 0 0 0 20px;
   display: inline-block;
-  font-family: "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", tahoma, arial,
-    simsun, "宋体";
   font-size: 1rem;
   color: #444;
 }
-.dia-tabs {
+.mywork-dia-tabs {
   background-color: #fafafa;
   overflow: hidden;
 }
-.hot {
+.mywork-hot {
   border-bottom: 1px solid #e7e7e7;
   padding: 10px 0 10px 10px;
   font-size: 12px;
 }
-.hot-tx {
+.mywork-hot-tx {
   display: inline-block;
   width: 30px;
   height: 30px;
   text-align: center;
 }
-.hot-tx img {
+.mywork-hot-tx img {
   width: 100%;
   height: 100%;
   vertical-align: middle;
 }
-.hot-name {
+.mywork-hot-name {
   display: inline-block;
   margin: 0 10px;
   color: #7594b3;
 }
-.coms-com {
+.mywork-coms-com {
   display: inline-block;
 }
 </style>

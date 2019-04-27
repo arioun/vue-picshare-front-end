@@ -1,31 +1,26 @@
 <template>
   <div class="ac">
     <h2 class="ac-title">账号</h2>
-    <h5 class="ac-title" >Email地址</h5>
-    <el-input v-model="input1" :disabled="true" class="ac-input">
-        <el-button slot="append" type="text" class="ac-input-btn">更改</el-button>
-    </el-input>
+    <h5 class="ac-title">Email地址</h5>
+    <el-input v-model="email" :disabled="true" class="ac-input"></el-input>
     <br>
-    <el-input  placeholder="输入要修改的邮箱" class="ac-input">
-        <el-button slot="append" type="text" class="ac-input-btn">获取验证码</el-button>
-    </el-input>
+    <el-form :model="emailForm" :rules="rules" ref="emailForm">
+        <el-form-item prop="email">
+            <el-input v-model="emailForm.email" placeholder="输入要修改的邮箱" class="ac-input"></el-input>
+        </el-form-item>
     <br>
-    <el-input  placeholder="输入验证码" class="ac-input ac-yzm"></el-input>
+    <el-button class="ac-btn" @click="saveemail" :disabled="emailbtn">确定</el-button>
+    </el-form>
+    <h5 class="ac-title">手机号码</h5>
+    <el-input v-model="phone" :disabled="true" class="ac-input"></el-input>
     <br>
-    <el-button class="ac-btn">确定</el-button>
-
-    <h5 class="ac-title" >手机号码</h5>
-    <el-input v-model="input2" :disabled="true" class="ac-input">
-        <el-button slot="append" type="text" class="ac-input-btn">更改</el-button>
-    </el-input>
+    <el-form :model="phoneForm" :rules="rules" ref="phoneForm">
+      <el-form-item prop="phone">
+        <el-input v-model="phoneForm.phone" placeholder="输入要修改的手机号码" class="ac-input"></el-input>
+      </el-form-item>
     <br>
-    <el-input  placeholder="输入要修改的手机号码" class="ac-input">
-        <el-button slot="append" type="text" class="ac-input-btn">获取验证码</el-button>
-    </el-input>
-    <br>
-    <el-input placeholder="输入验证码" class="ac-input ac-yzm"></el-input>
-    <br>
-    <el-button class="ac-btn">确定</el-button>
+    <el-button class="ac-btn" @click="savephone" :disabled="phonebtn">确定</el-button>
+    </el-form>
   </div>
 </template>
 
@@ -33,53 +28,129 @@
 export default {
   name: "account",
   data() {
-      return {
-          input1:'picshare@pic.com',
-          input2:'13312341234'
+    var validatePhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("手机号不能为空"));
+      } else {
+        const reg = /^1[3|4|5|7|8][0-9]\d{8}$/;
+        console.log(reg.test(value));
+        if (reg.test(value)) {
+          callback();
+        } else {
+          return callback(new Error("请输入正确的手机号"));
+        }
       }
+    };
+    return {
+      email: "",
+      phone: "",
+      emailbtn:false,
+      phonebtn:false,
+      emailForm:{
+          email:''
+      },
+      phoneForm:{
+          phone:''
+      },
+      rules: {
+        phone: [{ validator: validatePhone, trigger: "blur" }],
+        email: [
+          { required: true, message: "请输入邮箱地址", trigger: "blur" },
+          {
+            type: "email",
+            message: "请输入正确的邮箱地址",
+            trigger: ["blur", "change"]
+          }
+        ]
+      }
+    };
   },
+  created() {
+    this.$http
+      .post(
+        "/api/basicInfo",
+        { uid: localStorage.getItem("uid") },
+        { emulateJSON: true }
+      )
+      .then(result => {
+        console.log(result);
+        if (result.body[0].email) {
+          this.email = result.body[0].email;
+        } else {
+          this.email = "请输入邮箱";
+        }
+        if (result.body[0].phone) {
+          this.phone = result.body[0].phone;
+        } else {
+          this.phone = "请输入手机号";
+        }
+      });
+  },
+  methods: {
+    saveemail() {
+        this.$refs.emailForm.validate((valid) => {
+          if (valid) {
+            this.$http.post("/api/updateInfo",{ uid: localStorage.getItem("uid"), email: this.emailForm.email },{ emulateJSON: true })
+        .then(result => {
+          console.log(result);
+        })
+          } else {
+            return false;
+          }
+        });
+      
+    },
+    savephone() {
+        this.$refs.phoneForm.validate((valid) => {
+        if(valid){
+        this.$http.post("/api/updateInfo",{ uid: localStorage.getItem("uid"), phone: this.phoneForm.phone },{ emulateJSON: true })
+        .then(result => {
+          console.log(result);
+        })
+        } else{
+            return false;
+        }
+        });
+    }
+  }
 };
 </script>
 
 <style>
-.ac{
-    background-color: #fff;
-    border: #bbbbbb solid 1px;;
-    width: 80%;
-    margin: 30px auto;
+.ac {
+  background-color: #fff;
+  border: #bbbbbb solid 1px;
+  width: 80%;
+  margin: 30px auto;
 }
-.ac-title{
+.ac-title {
+  margin-left: 15px;
+}
+.ac input {
+  padding-right: 0 !important;
+  background-color: #fff !important;
+}
+.ac-input {
+  width: 500px !important;
+  margin-top: 15px;
+  margin-left: 15px;
+}
+.el-form-item__error{
     margin-left: 15px;
 }
-.ac input{
-    margin-left: 15px;
-    padding-right: 0 !important; 
-    background-color: #fff !important;
+.ac-input-btn span {
+  color: #d1b200;
+  font-size: 12px;
 }
-.ac-input{
-    width: 500px !important;
-    margin-top: 15px;
-    
+.el-input-group__append {
+  border: none;
+  background-color: #fff !important;
 }
-.ac-yzm{
-    width: 486px !important;
-}
-.ac-input-btn{
-    border: none;
-}
-.ac-input-btn span{
-    color: #D1B200;
-    font-size: 12px;
-}
-.el-input-group__append{
-    border: none;
-    background-color: #fff !important;
-}
-.ac-btn{
-    margin:  10px 0 20px 15px !important;
-    width: 15%;
-    background-color: #D1B200 !important;
-    color: #fff !important;
-    border: #BBBBBB solid 1px !important;
+.ac-btn {
+  margin: 10px 0 20px 15px !important;
+  width: 15%;
+  background-color: #d1b200 !important;
+  color: #fff !important;
+  border: #bbbbbb solid 1px !important;
 }
 </style>
