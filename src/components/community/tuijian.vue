@@ -99,23 +99,19 @@ export default {
     others(uid){
       this.$router.push({path: "/community/others",query:{my:false,uid:uid}})
     },
-    scroll(scrollData) {
+    scroll() {
     },
-    loadmore(index) {
+    loadmore() {
     },
     getData(){
       this.$http.get('/api/pictureUsersList').then(res=>{
         this.imgs = Object.assign(res.body);
-        console.log(this.imgs);
-        
       })
     },
     getuserinfo(uid){
       this.$http.post('/api/basicInfo',{uid:uid},{emulateJSON:true})
       .then(res=>{
-        this.useritem = Object.assign(res.body[0]);
-        console.log(this.useritem);
-        
+        this.useritem = Object.assign(res.body[0]);  
       })
     },
     show(item) {

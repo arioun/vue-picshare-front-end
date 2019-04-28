@@ -106,7 +106,6 @@ export default {
     edit(gid){
       this.$http.post('/api/galleryUpdate',{gid:gid,uid:this.uid,gallery_name:this.albumname,status:this.status},{emulateJSON:true})
       .then(res=>{
-        console.log(res);
         if (res.body.message=="修改成功") {
           this.$message({
               message: "修改成功",

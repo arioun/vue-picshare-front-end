@@ -93,15 +93,14 @@ export default {
     }
   },
   methods: {
-    scroll(scrollData) {
+    scroll() {
     },
-    loadmore(index) {
+    loadmore() {
     },
     getmylike(){
       this.$http.post('/api/like',{uid:this.uid},{emulateJSON:true})
       .then(res=>{
         this.imgs = Object.assign(res.body);
-        console.log(this.imgs);
       })
     },
     deletelike(pid){
@@ -127,10 +126,9 @@ export default {
       this.$http.post('/api/basicInfo',{uid:uid},{emulateJSON:true})
       .then(res=>{
         this.useritem = Object.assign(res.body[0]);
-        console.log(this.useritem);
       })
     },
-    follow(uid){
+    follow(){
 
     },
     show(img) {

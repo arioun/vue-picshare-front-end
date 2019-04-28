@@ -196,9 +196,6 @@ export default {
               });
             }
           })
-          .catch(result => {
-            console.log(result);
-          });
       } else if (type == "email") {
         this.$http
           .post(
@@ -228,9 +225,6 @@ export default {
               });
             }
           })
-          .catch(result => {
-            console.log(result);
-          });
       }
     },
     logout() {
@@ -290,9 +284,6 @@ export default {
               });
             }
           })
-          .catch(result => {
-            console.log(result);
-          });
       }
     },
     setting() {

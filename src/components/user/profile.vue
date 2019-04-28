@@ -74,11 +74,6 @@ export default {
      this.getinfo()
    },
    methods: {
-     log(){
-       console.log(this.city);
-       console.log(this.province);
-       
-     },
      changeprovince(a){
        this.province=a.value;
      },
@@ -110,7 +105,6 @@ export default {
        province:this.province,
        city:this.city
        },{emulateJSON:true}).then(res=>{
-         console.log(res);
          if (res.body.message=="编辑成功") {
           this.$message({
               message: "修改成功",
@@ -128,11 +122,9 @@ export default {
      },
      save(){
       // this.uploadimg();
-       this.updataInfo();
-       console.log(this.city);
-       
+       this.updataInfo();  
      },
-     changehead(e){
+     changehead(){
        this.uploadimg()
      },
      setavatar(){
@@ -141,7 +133,6 @@ export default {
     uploadimg(){
       var image = new FormData()
       image.append('file', this.$refs.avatarInput.files[0])
-      console.log(this.$refs.avatarInput.files[0]);
       /*this.$http.post('/api/upload',image)
       .then(result=>{
         console.log(result);

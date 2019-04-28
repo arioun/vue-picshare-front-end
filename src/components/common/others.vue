@@ -68,7 +68,6 @@
 </template>
 
 <script>
-import { stat } from 'fs';
 export default {
   name: "other",
   components: {},

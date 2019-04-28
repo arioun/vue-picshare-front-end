@@ -84,9 +84,9 @@ export default {
     }
   },
   methods: {
-    scroll(scrollData) {
+    scroll() {
     },
-    loadmore(index) {
+    loadmore() {
     },
     getmywork(){
     this.$http.post('/api/myPictures',{uid:this.uid},{emulateJSON:true})

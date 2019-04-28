@@ -77,7 +77,6 @@ export default {
       var image = new FormData();
       image.append("file", file);
       this.$http.post("/api/upload", image).then(res => {
-        console.log(res);
         if (res.body.message == "上传成功") {
           this.galleryUpload(res.body.image, res.body.weight, res.body.height);
         }
@@ -117,8 +116,8 @@ export default {
           }
         });
     },
-    scroll(scrollData) {},
-    loadmore(index) {},
+    scroll() {},
+    loadmore() {},
     getalbumdetail() {
       this.$http
         .post("/api/galleryDetail", { gid: this.gid }, { emulateJSON: true })

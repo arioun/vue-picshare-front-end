@@ -88,7 +88,6 @@
 </template>
 
 <script>
-import { stat } from 'fs';
 export default {
   name: "myshequ",
   components: {},
