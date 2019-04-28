@@ -42,6 +42,13 @@ export default {
       }
     };
     return {
+      uid:localStorage.getItem("uid"),
+      username:'',
+      sex:'',
+      birthday:'',
+      introduce:'',
+      province:'',
+      city:'',
       email: "",
       phone: "",
       emailbtn:false,
@@ -66,33 +73,45 @@ export default {
     };
   },
   created() {
-    this.$http
-      .post(
-        "/api/basicInfo",
-        { uid: localStorage.getItem("uid") },
-        { emulateJSON: true }
-      )
-      .then(result => {
-        console.log(result);
-        if (result.body[0].email) {
-          this.email = result.body[0].email;
-        } else {
-          this.email = "请输入邮箱";
-        }
-        if (result.body[0].phone) {
-          this.phone = result.body[0].phone;
-        } else {
-          this.phone = "请输入手机号";
-        }
-      });
+    this.getuserinfo()
   },
   methods: {
+    getuserinfo(){
+      this.$http.post("/api/basicInfo",{ uid: this.uid },{ emulateJSON: true })
+      .then(result => {
+        this.username=result.body[0].username;
+       this.sex=result.body[0].sex;
+       this.email=result.body[0].email;
+       this.phone=result.body[0].phone;
+       this.birth=result.body[0].birthday;
+       this.introduce=result.body[0].introduce;
+       this.province=result.body[0].province;
+       this.city=result.body[0].city;
+
+      });
+    },
     saveemail() {
         this.$refs.emailForm.validate((valid) => {
           if (valid) {
-            this.$http.post("/api/updateInfo",{ uid: localStorage.getItem("uid"), email: this.emailForm.email },{ emulateJSON: true })
-        .then(result => {
-          console.log(result);
+            this.$http.post("/api/updateInfo",{ uid:this.uid, username:this.username,email: this.emailForm.email,phone:this.phone,
+            sex:this.sex,birthday:this.birthday,introduce:this.introduce,
+            province:this.province,city:this.city },{ emulateJSON: true })
+        .then(res => {
+          if (res.body.message=="编辑成功") {
+          this.$message({
+              message: "修改成功",
+              type: "success",
+              customClass: "zIndex"
+            })
+          this.getuserinfo()
+          this.emailForm.email=''
+        }else{
+          this.$message({
+              message: "修改失败",
+              type: "danger",
+              customClass: "zIndex"
+            })
+        }
         })
           } else {
             return false;
@@ -103,9 +122,25 @@ export default {
     savephone() {
         this.$refs.phoneForm.validate((valid) => {
         if(valid){
-        this.$http.post("/api/updateInfo",{ uid: localStorage.getItem("uid"), phone: this.phoneForm.phone },{ emulateJSON: true })
-        .then(result => {
-          console.log(result);
+        this.$http.post("/api/updateInfo",{ uid:this.uid, username:this.username,email: this.email,phone:this.phoneForm.phone,
+          sex:this.sex,birthday:this.birthday,introduce:this.introduce,province:this.province,city:this.city 
+        },{ emulateJSON: true })
+        .then(res => {
+          if (res.body.message=="编辑成功") {
+          this.$message({
+              message: "修改成功",
+              type: "success",
+              customClass: "zIndex"
+            })
+          this.getuserinfo()
+          this.phoneForm.phone=''
+        }else{
+          this.$message({
+              message: "修改失败",
+              type: "danger",
+              customClass: "zIndex"
+            })
+        }
         })
         } else{
             return false;

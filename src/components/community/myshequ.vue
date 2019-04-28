@@ -261,13 +261,13 @@ export default {
       this.$router.push({path: "/community/mycommunity/myalbum",query:{uid:this.uid}})
     },
     showwork(){
-      this.$router.push({path: "/community/mycommunity/mywork",query:{uid:this.uid}})
+      this.$router.push({path: "/community/mycommunity/mywork",query:{my:true,uid:this.uid}})
     },
     showlike(){
-      this.$router.push({path: "/community/mycommunity/mylike",query:{uid:this.uid}})
+      this.$router.push({path: "/community/mycommunity/mylike",query:{my:true,uid:this.uid}})
     },
     showcollection(){
-      this.$router.push({path: "/community/mycommunity/mycollection",query:{uid:this.uid}})
+      this.$router.push({path: "/community/mycommunity/mycollection",query:{my:true,uid:this.uid}})
     },
     show(data) {
       this.comName = data;

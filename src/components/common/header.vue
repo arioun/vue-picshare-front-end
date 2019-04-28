@@ -48,10 +48,10 @@
     </el-row>
 
     <el-dialog :title="dialogtitle" :visible.sync="dialogLogin" width="30%" class="head-dialog">
-      <component :is="dialogcom" @func="dialogswitch" @login="login" @register="register"></component>
+      <component :is="dialogcom" @func="dialogswitch" @login="login" ></component>
     </el-dialog>
     <el-dialog :title="dialogtitle" :visible.sync="dialogRegister" width="30%" class="head-dialog">
-      <component :is="dialogcom" @func="dialogswitch" @login="login" @register="register"></component>
+      <component :is="dialogcom" @func="dialogswitch" @register="register"></component>
     </el-dialog>
   </div>
 </template>
@@ -77,7 +77,8 @@ export default {
       user: true,
       username: "",
       dialogtitle: "登录",
-      dialogcom: "login"
+      dialogcom: "login",
+      uid:localStorage.getItem('uid')
     };
   },
   methods: {
@@ -96,11 +97,19 @@ export default {
         this.flag3 = false;
         this.flag4 = false;
       } else if (this.comName == "/publish") {
+        if (this.uid) {
         this.$router.push({ path: "/publish" });
         this.flag1 = false;
         this.flag2 = false;
         this.flag3 = true;
         this.flag4 = false;
+      }else{
+        this.$message({
+                message: "您还未登录",
+                type: "warning",
+                customClass: "zIndex"
+              });
+      }
       } else if (this.comName == "/notice") {
         if (localStorage.getItem("login")) {
           this.$router.push({ path: "/notice" });
@@ -166,13 +175,13 @@ export default {
             { emulateJSON: true }
           )
           .then(result => {
-            console.log(result);
             if (result.body.message == "登录成功") {
               this.user = false;
               localStorage.setItem("uid", result.body.uid);
               localStorage.setItem("login", "yes");
               this.getinfo(result.body.uid)
               this.dialogLogin = false;
+              this.$router.go(0)
             } else if (result.body.message == "用户名或密码错误") {
               this.$message({
                 message: "手机号或密码错误",
@@ -199,10 +208,12 @@ export default {
           )
           .then(result => {
             if (result.body.message == "登录成功") {
+              this.user = false;
               localStorage.setItem("uid", result.body.uid);
               localStorage.setItem("login", "yes");
               this.getinfo(result.body.uid)
               this.dialogLogin = false;
+              this.$router.go(0)
             } else if (result.body.message == "用户名或密码错误") {
               this.$message({
                 message: "邮箱或密码错误",
@@ -227,6 +238,7 @@ export default {
       localStorage.setItem("login", "");
       localStorage.setItem("uid", "");
       localStorage.setItem("username", "");
+      this.$router.push({path:'/'})
     },
     register(type, data, passwd) {
       if (type == "phone") {
@@ -237,13 +249,13 @@ export default {
             { emulateJSON: true }
           )
           .then(result => {
-            console.log(result);
             if (result.body.message == "注册成功") {
               localStorage.setItem("uid", result.body.uid)
               localStorage.setItem("login", 'yes')
               this.getinfo(result.body.uid)
               this.user = false;
               this.dialogRegister = false;
+              this.$router.go(0)
             } else if (result.body.message == "该手机号已注册") {
               this.$message({
                 message: "该手机号已注册",
@@ -263,14 +275,13 @@ export default {
             { emulateJSON: true }
           )
           .then(result => {
-            console.log(result);
             if (result.body.message == "注册成功") {
               localStorage.setItem("uid", result.body.uid)
               localStorage.setItem("login", 'yes')
-              this.username = result.body[0].username
               this.getinfo(result.body.uid)
               this.user = false
               this.dialogRegister = false
+              this.$router.go(0)
             } else if (result.body.message == "该邮箱已注册") {
               this.$message({
                 message: "该邮箱已注册",
@@ -329,7 +340,7 @@ export default {
     }
   },
   watch: {
-    $route: function(to, from) {
+    $route: function(to) {
       if (/gallery/g.test(to.path)) {
         this.flag1 = true;
         this.flag2 = false;

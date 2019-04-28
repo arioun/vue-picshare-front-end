@@ -11,10 +11,10 @@
             <div class="tj-desc">{{img.description}}</div>
             <el-row type="flex" class="tj-footer">
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4" class="tj-tx">
-              <img :src="img.head_image">
+              <img :src="img.head_image" @click="others(img.uid)">
           </el-col>
           <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6" class="tj-name">
-           {{img.username?img.username:'注册用户'}}
+            <span @click="others(img.uid)">{{img.username?img.username:'注册用户'}}</span>
           </el-col>
           </el-row>
           </div>
@@ -96,6 +96,9 @@ export default {
     }
   },
   methods: {
+    others(uid){
+      this.$router.push({path: "/community/others",query:{my:false,uid:uid}})
+    },
     scroll(scrollData) {
     },
     loadmore(index) {
@@ -166,6 +169,7 @@ export default {
   height: 100%;
   border-radius: 50%;
   vertical-align: middle;
+  cursor: pointer;
 }
 .tj-name{
   color: #9E7E6B;
@@ -173,6 +177,7 @@ export default {
   display: table-cell;
   vertical-align: middle;
   line-height: 55px;
+  cursor: pointer;
 }
 
 .tj-card-foot-btn button {

@@ -7,9 +7,7 @@
         <el-input v-model="username" class="pr-input"></el-input>
         <h5 >性别</h5>
         <el-select v-model="sex" placeholder="请选择">
-          <el-option label="保密" value="0"></el-option>
-          <el-option label="男" value="1"></el-option>
-          <el-option label="女" value="2"></el-option>
+          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
         <h5 >生日</h5>
         <div class="block">
@@ -18,7 +16,7 @@
         <h5>简介</h5>
         <el-input v-model="desc" class="pr-input"></el-input>
         <h5 >居住城市</h5>
-        <v-distpicker :province="province" :city="city" hide-area></v-distpicker>
+        <v-distpicker @province="changeprovince" @city="changecity" :province='province' :city='city' hide-area></v-distpicker>
         <el-button class="pr-btn" @click="save">保&nbsp;存</el-button>
       </el-main>
       <el-aside width="300px" class="pr-aside">
@@ -43,9 +41,24 @@ export default {
   },
    data() {
       return {
+        uid:localStorage.getItem('uid'),
         picture: {},
         username:'',
-        sex:'',
+        sex:0,
+        options:[
+        {
+          value: 0,
+          label: "保密"
+        },
+        {
+          value: 1,
+          label: "男"
+        },
+        {
+          value:2,
+          label:'女'
+        }
+      ],
         email:'',
         phone:'',
         birth:'',
@@ -61,22 +74,24 @@ export default {
      this.getinfo()
    },
    methods: {
-     sexs(v){
-       if (v==0) {
-         return '保密'
-       } else if(v==1){
-         return '男'
-       }else if(v==2){
-        return '女'
-       }
+     log(){
+       console.log(this.city);
+       console.log(this.province);
+       
+     },
+     changeprovince(a){
+       this.province=a.value;
+     },
+     changecity(a){
+      this.city=a.value;
      },
      getinfo(){
-       this.$http.post('/api/basicInfo',{uid:localStorage.getItem('uid')},{emulateJSON:true})
+       this.$http.post('/api/basicInfo',{uid:this.uid},{emulateJSON:true})
      .then(result=>{
        this.username=result.body[0].username;
-       this.sex=this.sexs(result.body[0].sex);
-       this.email=result.body[0].birthday;
-       this.phone=result.body[0].birthday;
+       this.sex=result.body[0].sex;
+       this.email=result.body[0].email;
+       this.phone=result.body[0].phone;
        this.birth=result.body[0].birthday;
        this.desc=result.body[0].introduce;
        this.province=result.body[0].province;
@@ -85,7 +100,7 @@ export default {
      })
      },
      updataInfo(){
-       this.$http.post('/api/updateInfo',{uid:localStorage.getItem('uid'),
+       this.$http.post('/api/updateInfo',{uid:this.uid,
        username:this.username,
        sex:this.sex,
        email:this.email,
@@ -94,15 +109,14 @@ export default {
        introduce:this.desc,
        province:this.province,
        city:this.city
-       },{emulateJSON:true}).then(result=>{
-         console.log(result);
+       },{emulateJSON:true}).then(res=>{
+         console.log(res);
          if (res.body.message=="编辑成功") {
           this.$message({
               message: "修改成功",
               type: "success",
               customClass: "zIndex"
-            });
-          this.getmywork()
+            })   
         }else{
           this.$message({
               message: "修改失败",
@@ -113,8 +127,10 @@ export default {
        })
      },
      save(){
-       this.uploadimg();
+      // this.uploadimg();
        this.updataInfo();
+       console.log(this.city);
+       
      },
      changehead(e){
        this.uploadimg()
@@ -131,17 +147,7 @@ export default {
         console.log(result);
         this.avatarurl=result.body.image;
       })*/
-    },
-    /*beforeUpload(file){
-      console.log(file)
-       let fd = new FormData()
-       fd.append('file', file)
-       // console.log(fd)
-        this.$http.post('/api/upload',fd)
-        .then(result=>{
-          console.log(result);
-        })
-    }*/
+    }
    }
 };
 </script>

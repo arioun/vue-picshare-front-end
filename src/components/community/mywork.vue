@@ -16,7 +16,7 @@
           <div class="mywork-line">
             <div class="mywork-lc">{{img.like_num}}喜欢/555评论</div>
             <div class="my-work-space"></div>
-            <div class="mywork-btn"><el-button type="text" @click="deletepic(img.pid)">删除</el-button></div>
+            <div v-if="my" class="mywork-btn"><el-button type="text" @click="deletepic(img.pid)">删除</el-button></div>
           </div>
       </div>
         </div>
@@ -67,6 +67,7 @@ export default {
       activeName: "comments",
       col:5,
       uid:this.$route.query.uid,
+      my:this.$route.query.my,
       avatar:'http://188.131.192.194/head_images/5LSk0zVtyKDq9UciiWPab50dwjoNI2324KtwSyBD.jpeg',
       imgs:[]
     };

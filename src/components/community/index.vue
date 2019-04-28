@@ -10,7 +10,7 @@
             <el-button type="text" @click="show('myfollow')">关注</el-button>
           </el-col>
           <el-col :span="2" :offset="5" :class="['communitybtn',flag3?'com-btn-act':'']">
-              <el-button type="text" @click="show('mycommunity');showsq()">我的社区</el-button>
+              <el-button type="text" @click="show('mycommunity')">我的社区</el-button>
           </el-col>
         </el-row>
       </el-header>
@@ -47,15 +47,32 @@ export default {
       this.flag2=false,
       this.flag3=false
     }else if(/myfollow/gi.test(this.comName)){
-      this.$router.push({path:'/community/myfollow'});
-      this.flag1=false,
-      this.flag2=true,
-      this.flag3=false
+      if (this.uid) {
+        this.$router.push({path:'/community/myfollow'});
+        this.flag1=false,
+        this.flag2=true,
+        this.flag3=false
+      }else{
+        this.$message({
+                message: "您还未登录",
+                type: "warning",
+                customClass: "zIndex"
+              });
+      }
     }
     else if(/mycommunity/gi.test(this.comName)){
-      this.flag1=false,
-      this.flag2=false,
-      this.flag3=true
+      if (this.uid) {
+        this.showsq();
+        this.flag1=false,
+        this.flag2=false,
+        this.flag3=true
+      }else{
+        this.$message({
+                message: "您还未登录",
+                type: "warning",
+                customClass: "zIndex"
+              });
+      }
     }
     }
   },

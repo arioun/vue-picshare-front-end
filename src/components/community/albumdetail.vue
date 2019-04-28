@@ -25,7 +25,7 @@
                   <div class="aldetail-det">
                     <el-button type="text" @click="show(img)">查看详情</el-button>
                   </div>
-                  <div class="aldetail-line">
+                  <div v-if="my" class="aldetail-line">
                     <div class="aldetail-btn">
                       <el-button type="text" @click="deletedetail(img.pid)">删除</el-button>
                     </div>

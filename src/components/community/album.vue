@@ -147,7 +147,7 @@ export default {
     },
     detail(gid) {
       if (/others/gi.test(this.comName)) {
-        this.$router.push({ path: "/community/others/album/detail" });
+        this.$router.push({ path: "/community/others/album/detail",query:{my:false,gid:gid,uid:this.uid}});
       } else {
         this.$router.push({ path: "/community/mycommunity/myalbum/detail" ,query:{my:true,gid:gid,uid:this.uid}});
       }

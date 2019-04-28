@@ -20,9 +20,7 @@
             <el-form-item v-else-if="retype=='email'" prop="email"> 
             <el-input class="rename" v-model="ruleForm.email" placeholder="请输入邮箱"></el-input>
           </el-form-item>
-          
-          </el-col>
-          
+          </el-col>        
         </el-row>
       
       <el-form-item prop="pass">
@@ -43,7 +41,7 @@
     </el-form>
     <el-row type="flex" justify="center" class="login">
       <el-col :span="23">
-        <el-button type="primary" @click="register('ruleForm',retype,retype=='phone'?ruleForm.phone:ruleForm.email,ruleForm.checkPass)">立即注册</el-button>
+        <el-button type="primary" @click="register(retype,retype=='phone'?ruleForm.phone:ruleForm.email,ruleForm.checkPass)">立即注册</el-button>
       </el-col>
     </el-row>
     <el-row class="zhuce-btn">
@@ -62,7 +60,6 @@ export default {
           return callback(new Error('手机号不能为空'));
         } else {
           const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
-          console.log(reg.test(value));
           if (reg.test(value)) {
             callback();
           } else {
@@ -120,7 +117,7 @@ export default {
           ],
           email:[
             { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
           ],
           pass: [
             { validator: validatePass, trigger: 'blur' }
@@ -136,7 +133,7 @@ export default {
     tologin() {
       this.$emit("func", "login");
     },
-    register(ruleForm,type,data,passwd){
+    register(type,data,passwd){
       this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             this.$emit("register",type,data,passwd);

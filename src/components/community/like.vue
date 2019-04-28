@@ -16,7 +16,7 @@
           <div class="like-line">
             <div class="like-lc">{{img[0].like_num}}喜欢/555评论</div>
             <div class="my-work-space"></div>
-            <div class="like-btn"><el-button type="text" @click="deletelike(img[0].pid)">取消点赞</el-button></div>
+            <div v-if="my" class="like-btn"><el-button type="text" @click="deletelike(img[0].pid)">取消点赞</el-button></div>
           </div>
       </div>
         </div>
@@ -75,6 +75,7 @@ export default {
       comment: "",
       col:5,
       uid:this.$route.query.uid,
+      my:this.$route.query.my,
       imgs:[],
       diaitem: [],
       useritem:[],
