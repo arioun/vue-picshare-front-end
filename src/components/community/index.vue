@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     showsq(){
-      this.$router.push({path: '/community/mycommunity',query:{uid:this.uid}});
+      this.$router.push({path: '/community/mycommunity',query:{my:true,uid:this.uid}});
     },
     show(data) {
       this.comName=data;

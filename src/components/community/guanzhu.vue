@@ -9,19 +9,19 @@
       <!--author-->
       <el-row class="gz-card-author" >
         <el-col :span="2" class="gz-tx">
-          <img :src="item.tx" >
+          <img :src="item.head_image" @click="others(item.uid)">
         </el-col>
         <el-col :span="2" class="gz-name">
-          <p v-text="item.username"></p>
+          <p @click="others(item.uid)">{{item.username?item.username:'注册用户'}}</p>
         </el-col>
-        <el-col :span="2" :offset="1" class="gz-date">
-          <p>11月1日</p>
+        <!--<el-col :span="2" :offset="1" class="gz-date">
+          <p></p>
+        </el-col>-->
+        <el-col :span="3" :offset="15" class="gz-btn-zan">
+          <el-button icon="el-icon-gz-heart" @click="like(item.pid)"></el-button>
+          <p v-text="item.like_num"></p>
         </el-col>
-        <el-col :span="3" :offset="11" class="gz-btn-zan">
-          <el-button icon="el-icon-gz-heart"></el-button>
-          <p v-text="item.like"></p>
-        </el-col>
-        <el-col :span="3" class="gz-btn-zan">
+        <el-col :span="2" class="gz-btn-zan">
           <el-button icon="el-icon-gz-comment"></el-button>
           <p v-text="item.comments"></p>
         </el-col>
@@ -29,94 +29,134 @@
       <!--描述-->
       <el-row>
         <el-col :span="20" class="gz-card-words">
-          <p v-text="item.text"></p>
+          <div v-text="item.description"></div>
         </el-col>
       </el-row>
       <!--输入评论-->
       <el-row type="flex" class="row-bg" justify="center">
         <el-col :span="24">
-          <el-input placeholder="你的评论是对ta最大的鼓励..." prefix-icon="el-icon-edit" class="gz-input">
-            <el-button slot="append" type="text" class="gz-send">发送</el-button>
+          <el-input placeholder="你的评论是对ta最大的鼓励..." v-model="inputcomment" prefix-icon="el-icon-edit" class="gz-input">
+            <el-button slot="append" type="text" class="gz-send" @click="addcom(item.pid,item.uid,inputcomment)">发送</el-button>
           </el-input>
         </el-col>
       </el-row>
       <!--评论者-->
-      <div class="gz-comments" v-for="(o,i) of 10" v-if="i<5" :key="o">
+      <div class="gz-comments" v-for="(img,i) of item.comment" :key="i">
         <el-row>
           <el-col :span="2" class="gz-follow-tx">
-            <img :src="item.tx" >
+            <img :src="img.send_head_image" >
           </el-col>
           <el-col :span="2" class="gz-follow-name">
-            <p v-text="item.username"></p>
+            <p>{{img.send_username?img.send_username:'注册用户'}}</p>
           </el-col>
         </el-row>
         <el-row class="gz-follow-comment">
           <el-col :span="5" :offset="2">
-            <p v-text="item.text"></p>
+            <p v-text="img.content"></p>
           </el-col>
-          <el-col :span="2" :offset="15">
+          <!--<el-col :span="2" :offset="15">
             <p class="gz-follow-comment-date">42分钟前</p>
-          </el-col>
+          </el-col>-->
         </el-row>
       </div>
-      <div class="gz-comments" v-for="(o,i) of 10" v-if="i>5&items[item.id].flag" :key="o">
+      <!--<div class="gz-comments" v-for="(img,i) of item.comment" v-if="i>5&" :key="i">
           <el-row>
           <el-col :span="2" class="gz-follow-tx">
-            <img :src="item.tx" >
+            <img :src="img.send_head_image" >
           </el-col>
           <el-col :span="2" class="gz-follow-name">
-            <p v-text="item.username"></p>
+            <p>{{img.send_username?img.send_username:'注册用户'}}</p>
           </el-col>
         </el-row>
         <el-row class="gz-follow-comment">
           <el-col :span="5" :offset="2">
-            <p v-text="item.text"></p>
+            <p v-text="img.content"></p>
           </el-col>
           <el-col :span="2" :offset="15">
             <p class="gz-follow-comment-date">42分钟前</p>
           </el-col>
         </el-row>
       </div>
-      <!--展示更多-->
-    <el-row type="flex" justify="center" v-if="!items[item.id].flag">
+     
+    <el-row type="flex" justify="center" v-if="flag">
         <el-col :span="4">
           <el-button type="text" class="gz-more" @click="showmore(item.id)">查看更多评论<i class="el-icon-my-arrow-down el-icon--right"></i></el-button>
         </el-col>
-      </el-row>
+      </el-row>-->
     </div>
   </div>
 </template>
-
 <script>
 export default {
   name: "guanzhu",
   data() {
     return {
       items: [],
+      inputcomment:'',
       uid:localStorage.getItem('uid')
     }
   },
+  created () {
+    this.getdata()
+  },
   methods: {
+    others(uid){
+      this.$router.push({path: "/community/others",query:{my:false,uid:uid}})
+    },
    showmore(id){
       this.items[id].flag=true;
     },
     getdata(){
-      this.$http.post('/api/commentList',{uid:this.uid},{emulateJSON:true})
+      this.$http.post('/api/userFocus',{uid:this.uid},{emulateJSON:true})
       .then(res=>{
         this.items = Object.assign(res.body);
       })
     },
-    getuserinfo(uid){
-      this.$http.post('/api/basicInfo',{uid:uid},{emulateJSON:true})
+    addcom(pid,uuid,content){
+      this.$http.post('/api/userComment',{pid:pid,uid:this.uid,uuid:uuid,content:content})
       .then(res=>{
-
+        if(res.body=='评论成功'){   
+          this.getdata()
+          this.inputcomment=''
+        }else{
+          this.$message({
+              message: "评论失败",
+              type: "danger",
+              customClass: "zIndex"
+            })
+        }
+      })
+    },
+    like(pid){
+      this.$http.post('/api/pictureLike',{uid:this.uid,pid:pid})
+      .then(res=>{
+        if (res.body.message=='点赞成功') {
+          this.getdata()
+        }else{
+          this.$message({
+              message: "点赞失败",
+              type: "danger",
+              customClass: "zIndex"
+            })
+        }
+      })
+    },
+    dislike(pid){
+      this.$http.post('/api/pictureLike',{uid:this.uid,pid:pid})
+      .then(res=>{
+        if (res.body.message=='取消点赞成功') {
+          this.getdata()
+        }else{
+          this.$message({
+              message: "取消点赞失败",
+              type: "danger",
+              customClass: "zIndex"
+            })
+        }
       })
     }
-  },
-  created () {
-    
   }
-};
+}
 </script>
 
 <style>
@@ -149,8 +189,10 @@ export default {
     width: 45px;
     height: 45px;
     border-radius: 50%;
+    cursor: pointer;
 }
 .gz-follow-tx{
+  margin-top: 10px;
   text-align: center;
 }
 .gz-follow-tx img{
@@ -158,9 +200,12 @@ export default {
     height: 35px;
     border-radius: 50%;
 }
+.gz-com{
+  padding-left: 10px;
+}
 .gz-name{
     font-size: 13px;
-
+    cursor: pointer;
 }
 .gz-follow-name p{
   font-size: 10px;
@@ -197,22 +242,32 @@ export default {
     display: inline;
 }
 .gz-card-words{
-    margin: 0 0 1% 1%;
+    margin: 10px 0 10px 20px;
 }
-.gz-send span{
-  color: #41B93B;
-  background-color: #fff;
+.gz-input{
+  margin-bottom: 20px;
 }
 .gz-input input{
   border-right: none;
   border-left: none;
   border-radius: 0px;
+  width: 100%!important;
 }
 .gz-input div{
   background-color: #fff;
+  border-radius: 0;
   border-left: none;
   border-right: none;
-  border-radius: 0px;
+  border-top: 1px solid #DCDFE6 !important;
+  border-bottom: 1px solid #DCDFE6 !important;
+}
+.gz-send{
+  border-radius: 0;
+  position: relative;
+}
+.gz-send span{
+  color: #41B93B;
+  background-color: #fff;
 }
 .gz-comments{
   margin-top: 1%;
@@ -239,4 +294,3 @@ export default {
   color: #101010;
 }
 </style>
-

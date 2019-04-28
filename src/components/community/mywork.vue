@@ -11,10 +11,10 @@
           </div>
           <div class="mywork-shadow">
           <div class="mywork-det">
-            <el-button type="text" @click="show(img)">查看详情</el-button>
+            <el-button type="text" @click="show(img);getpicdetail(img.pid)">查看详情</el-button>
           </div>
           <div class="mywork-line">
-            <div class="mywork-lc">{{img.like_num}}喜欢/555评论</div>
+            <div class="mywork-lc">{{img.like_num}}喜欢</div>
             <div class="my-work-space"></div>
             <div v-if="my" class="mywork-btn"><el-button type="text" @click="deletepic(img.pid)">删除</el-button></div>
           </div>
@@ -30,29 +30,19 @@
         <img :src="diaitem.position">
       </div>
       <div class="mywork-dia-text" v-text="diaitem.description"></div>
-      <el-tabs v-model="activeName">
-        <el-tab-pane :label="'热度('+diaitem.like_num+')'" name="hot">
+        <div class="tj-dia-like">
+        <el-button icon="el-icon-gz-heart"></el-button>
+          <span v-text="diaitem.like_num"></span>
+        </div>
           <div class="mywork-dia-tabs">
-            <div class="mywork-hot" v-for="o in 5" :key="o">
+            <div class="mywork-hot" v-for="com in picdetail.comment" :key="com.cid">
               <div class="mywork-hot-tx">
-                <img :src="diaitem.tx">
+                <img :src="com.from_head_image">
               </div>
-              <div class="mywork-hot-name" v-text="diaitem.username"></div>喜欢此图片
+              <div class="mywork-hot-name">{{com.from_username?com.from_username:'注册用户'}}</div>
+              <div class="mywork-coms-com">{{com.content}}</div>
             </div>
           </div>
-        </el-tab-pane>
-        <el-tab-pane :label="'评论('+diaitem.comments+')'" name="comments">
-          <div class="mywork-dia-tabs">
-            <div class="mywork-hot" v-for="o in 5" :key="o">
-              <div class="mywork-hot-tx">
-                <img :src="avatar">
-              </div>
-              <div class="mywork-hot-name">注册用户</div>
-              <div class="mywork-coms-com"></div>
-            </div>
-          </div>
-        </el-tab-pane>
-      </el-tabs>
     </el-dialog>
   </div>
 </template>
@@ -64,6 +54,7 @@ export default {
     return {
       dialogVisible: false,
       diaitem: [],
+      picdetail:[],
       activeName: "comments",
       col:5,
       uid:this.$route.query.uid,
@@ -92,6 +83,12 @@ export default {
     this.$http.post('/api/myPictures',{uid:this.uid},{emulateJSON:true})
       .then(res=>{
         this.imgs = Object.assign(res.body);
+      })
+    },
+    getpicdetail(pid){
+      this.$http.post('/api/pictureDetail',{pid:pid},{emulateJSON:true})
+      .then(res=>{
+        this.picdetail=Object.assign(res.body);
       })
     },
     deletepic(pid){
@@ -208,6 +205,7 @@ export default {
   color: #444;
 }
 .mywork-dia-tabs {
+  margin-top: 40px;
   background-color: #fafafa;
   overflow: hidden;
 }

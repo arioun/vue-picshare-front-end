@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "element-ui": "^2.7.2",
+    "file-saver": "^2.0.1",
     "v-distpicker": "^1.2.1",
     "vue": "^2.6.10",
     "vue-resource": "^1.5.1",

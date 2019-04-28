@@ -14,8 +14,6 @@
             <el-button type="text" @click="show(img)">查看详情</el-button>
           </div>
           <div class="collec-line">
-            <div class="collec-lc">{{img.like_num}}喜欢/555评论</div>
-            <div class="my-work-space"></div>
             <div class="collec-btn"><el-button type="text" @click="deletecollection(img.pid)">取消收藏</el-button></div>
           </div>
       </div>
@@ -66,6 +64,8 @@ export default {
     getmycollection(){
       this.$http.post('/api/collect',{uid:this.uid},{emulateJSON:true})
       .then(res=>{
+        console.log(res);
+        
         this.imgs = Object.assign(res.body);
       })
     },

@@ -14,6 +14,7 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(VueResource)
 Vue.use(waterfall)
+
 Vue.component('v-distpicker', VDistpicker)
 new Vue({
   router,

@@ -5,18 +5,18 @@
         <waterfall class="like-div" :col="col" :width="itemWidth" :gutterWidth="gutterWidth" :data="imgs" @loadmore="loadmore"
       @scroll="scroll">
       <template>
-        <div class="like-item" v-for="img in imgs" :key="img[0].pid">
+        <div class="like-item" v-for="img in imgs" :key="img.pid">
           <div class="like-img">
-            <img :src="img[0].position">
+            <img :src="img.position">
           </div>
           <div class="like-shadow">
           <div class="like-det">
-            <el-button type="text" @click="show(img);getuserinfo(img[0].uid)">查看详情</el-button>
+            <el-button type="text" @click="show(img);getuserinfo(img.uid);getpicdetail(img.pid)">查看详情</el-button>
           </div>
           <div class="like-line">
-            <div class="like-lc">{{img[0].like_num}}喜欢/555评论</div>
+            <div class="like-lc">{{img.like_num}}喜欢</div>
             <div class="my-work-space"></div>
-            <div v-if="my" class="like-btn"><el-button type="text" @click="deletelike(img[0].pid)">取消点赞</el-button></div>
+            <div v-if="my" class="like-btn"><el-button type="text" @click="deletelike(img.pid)">取消点赞</el-button></div>
           </div>
       </div>
         </div>
@@ -28,38 +28,32 @@
     <el-dialog :visible.sync="dialogVisible" width="70%" class="like-dia">
       <div class="like-diahead">
         <div class="like-diahead-tx">
-          <img :src="useritem.head_image">
+          <img :src="useritem.head_image" @click="others(diaitem.uid)">
         </div>
-        <div class="like-diahead-name">{{useritem.username?useritem.username:'注册用户'}}</div>
+        <div class="like-diahead-name" @click="others(diaitem.uid)">{{useritem.username?useritem.username:'注册用户'}}</div>
         <el-button size="medium" class="like-diahead-btn" type="success">关注</el-button>
       </div>
       <div class="like-dia-cont">
         <img :src="diaitem.position">
       </div>
       <div class="like-dia-text" v-text="diaitem.description"></div>
-      <el-tabs v-model="activeName">
-        <el-tab-pane :label="'热度('+diaitem.like_num+')'" name="hot">
+      <div class="tj-dia-like">
+        <el-button icon="el-icon-gz-heart"></el-button>
+          <span v-text="diaitem.like_num"></span>
+      </div>
           <div class="like-dia-tabs">
-            <div class="like-hot" v-for="o in 5" :key="o">
+            <div class="tj-dia-comment">
+              <el-input class="tj-dia-input" v-model="comment" placeholder="请输入内容"></el-input>
+              <el-button class="tj-dia-btn" type="primary" @click="addcom(diaitem.pid,diaitem.uid,comment)">评 论</el-button>
+            </div>
+            <div class="like-hot" v-for="com in picdetail.comment" :key="com.cid">
               <div class="like-hot-tx">
-                <img :src="diaitem.tx">
+                <img :src="com.from_head_image">
               </div>
-              <div class="like-hot-name" v-text="diaitem.username"></div>喜欢此图片
+              <div class="like-hot-name">{{com.from_username?com.from_username:'注册用户'}}</div>
+              <div class="like-coms-com">{{com.content}}</div>
             </div>
           </div>
-        </el-tab-pane>
-        <el-tab-pane :label="'评论('+diaitem.comments+')'" name="comments">
-          <div class="like-dia-tabs">
-            <div class="like-hot" v-for="o in 5" :key="o">
-              <div class="like-hot-tx">
-                <img :src="avatar">
-              </div>
-              <div class="like-hot-name">注册用户</div>
-              <div class="like-coms-com"></div>
-            </div>
-          </div>
-        </el-tab-pane>
-      </el-tabs>
     </el-dialog>
   </div>
 </template>
@@ -70,7 +64,6 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      activeName: "comments",
       avatar:'http://188.131.192.194/head_images/5LSk0zVtyKDq9UciiWPab50dwjoNI2324KtwSyBD.jpeg',
       comment: "",
       col:5,
@@ -78,6 +71,7 @@ export default {
       my:this.$route.query.my,
       imgs:[],
       diaitem: [],
+      picdetail:[],
       useritem:[],
     };
   },
@@ -93,6 +87,9 @@ export default {
     }
   },
   methods: {
+    others(uid){
+      this.$router.push({path: "/community/others",query:{my:false,uid:uid}})
+    },
     scroll() {
     },
     loadmore() {
@@ -130,6 +127,27 @@ export default {
     },
     follow(){
 
+    },
+    getpicdetail(pid){
+      this.$http.post('/api/pictureDetail',{pid:pid},{emulateJSON:true})
+      .then(res=>{
+        this.picdetail=Object.assign(res.body);
+      })
+    },
+    addcom(pid,uuid,content){
+      this.$http.post('/api/userComment',{pid:pid,uid:this.uid,uuid:uuid,content:content})
+      .then(res=>{
+        if(res.body=='评论成功'){   
+          this.getpicdetail(pid)
+          this.comment=''
+        }else{
+          this.$message({
+              message: "评论失败",
+              type: "danger",
+              customClass: "zIndex"
+            })
+        }
+      })
     },
     show(img) {
       this.diaitem = img;
@@ -227,6 +245,7 @@ export default {
   width: 100%;
   height: 100%;
   vertical-align: middle;
+  cursor: pointer;
 }
 .like-diahead-name {
   width: auto;
@@ -234,6 +253,7 @@ export default {
   font-size: 20px;
   text-align: center;
   display: inline-block;
+  cursor: pointer;
 }
 .like-diahead-btn {
   display: inline-block;
@@ -249,7 +269,7 @@ export default {
   height: 100%;
 }
 .like-dia-text {
-  margin: 0px 0 0 20px;
+  margin: 10px 0 0 5px;
   display: inline-block;
   font-family: "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", tahoma, arial,
     simsun, "宋体";
@@ -257,6 +277,7 @@ export default {
   color: #444;
 }
 .like-dia-tabs {
+  margin-top: 40px;
   background-color: #fafafa;
   overflow: hidden;
 }

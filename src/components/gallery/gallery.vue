@@ -59,14 +59,19 @@
         </div>
         <el-button type="text" v-if="collect" @click="docollect(diaitem.pid)">收藏</el-button>
         <el-button type="text" style="color:#bfbfbf;" v-else @click="cancelcollect(diaitem.pid)">已收藏</el-button>
-        <el-button type="text" @click="downpic(diaitem.url)">下载</el-button>
+        <el-button type="text" @click="downpic(diaitem.position)">下载</el-button>
       </el-dialog>
   </div>
 </template>
 
 <script>
+import  saveAs  from 'file-saver'
+var FileSaver = require('file-saver');
 export default {
   name: "gallery",
+  components: {
+    saveAs
+  },
   data() {
     return {
       show:false,
@@ -168,7 +173,30 @@ export default {
             });
         }
       })
+    },
+    downpic(url){
+      //this.downloadIamge(url)
+      FileSaver.saveAs(url, "image.jpg");
+    },
+    downloadIamge(imgsrc, name) {
+    let image = new Image();
+	  // 解决跨域 Canvas 污染问题
+	  image.setAttribute("crossOrigin", "anonymous");
+	  image.onload = function() {
+	    let canvas = document.createElement("canvas");
+	    canvas.width = image.width;
+	    canvas.height = image.height;
+	    let context = canvas.getContext("2d");
+	    context.drawImage(image, 0, 0, image.width, image.height);
+	    let url = canvas.toDataURL("image/png"); //得到图片的base64编码数据
+	    let a = document.createElement("a"); // 生成一个a元素
+	    let event = new MouseEvent("click"); // 创建一个单击事件
+	    a.download = name || "photo"; // 设置图片名称
+	    a.href = url; // 将生成的URL设置为a.href属性
+	    a.dispatchEvent(event); // 触发a的单击事件
     }
+	image.src = imgsrc;
+  },
   },
 };
 </script>
