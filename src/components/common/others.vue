@@ -12,14 +12,13 @@
               <li>
                 <ul class="other-ul3">
                   <li>
-                    <router-link to="/community/mycommunity/focus">
-                      <el-button type="text" @click="show('focus')">关注&nbsp;{{follows}}</el-button>
-                    </router-link>
+                      <el-button type="text">关注&nbsp;{{follows}}</el-button>
                   </li>
                   <li>
-                    <router-link to="/community/mycommunity/follows">
-                      <el-button type="text" @click="show('follows')">粉丝&nbsp;{{fans}}</el-button>
-                    </router-link>
+                      <el-button type="text">粉丝&nbsp;{{fans}}</el-button>
+                  </li>
+                  <li>
+                      <el-button class="other-gz" size="mini" @click="follow(uid)">关注</el-button>
                   </li>
                 </ul>
               </li>
@@ -150,6 +149,24 @@ export default {
     }
   },
   methods: {
+    follow(uuid){
+        this.$http.post('/api/addFocus',{uid:this.uid,uuid:uuid},{emulateJSON:true})
+        .then(res=>{
+            if (res.body.message=="关注成功") {
+          this.$message({
+              message: "关注成功",
+              type: "success",
+              customClass: "zIndex"
+            });
+        }else{
+          this.$message({
+              message: "您已关注",
+              type: "warning",
+              customClass: "zIndex"
+            });
+        }
+        })
+      },
     getinfo(){
       this.$http.post('/api/basicInfo',{uid:this.uid},{emulateJSON:true})
      .then(result=>{
@@ -239,6 +256,10 @@ export default {
 .other-ul li {
   color: #ffffff;
   text-align: center;
+}
+.other-gz{
+  background-color: #41b93b!important;
+  border: none;
 }
 .other-tx {
   width: 120px;

@@ -1,22 +1,17 @@
 <template>
-  <div class="focus">
-      <span class="focus-title">共有 {{followsnum}} 位用户关注了您</span>
-    <el-row class="focus-row">
-      <el-col :span="5" v-for="(o) in 10" :key="o" class="focus-col">
+  <div class="follows">
+      <span class="follows-title">您关注了 {{followsnum}} 位用户</span>
+    <el-row class="follows-row">
+      <el-col :span="5" v-for=" item in items" :key="item.uid" class="follows-col">
         <el-card :body-style="{ padding: '0px' }" shadow="hover">
             <div class="card-bg"></div>
-            <ul class="focus-ul">
-                <li class="focus-tx"><img src="../../assets/tx6.jpg" ></li>
-                <li class="focus-name" v-text="username"></li>
-                <li class="focus-btn">
-                    <el-button size="mini">关注</el-button>
+            <ul class="follows-ul">
+                <li class="follows-tx"><img :src="item.head_image" @click="others(item.uid)" ></li>
+                <li class="follows-name" @click="others(item.uid)">{{item.username?item.username:'注册用户'}}</li>
+                <li class="follows-btn">
+                    <el-button size="mini" @click="deletefocus(item.uid)">取消关注</el-button>
                 </li>
             </ul>
-            <ul class="focus-ul2">
-                <li>关注{{focusnum}}</li>
-                <li class="focus-space">粉丝{{followsnum}}</li>
-            </ul>
-            <span v-text="userintr" class="focus-userintr"></span>
         </el-card>
       </el-col>
     </el-row>
@@ -27,25 +22,47 @@ export default {
   name: "follows",
   data() {
       return {
-          username:'climbdylan',
-          focusnum:15,
-          followsnum:100,
-          userintr:'亲爱的我们生活在最好的年代。'
+          uid:this.$route.query.uid,
+          followsnum:this.$route.query.follows,
+          items:[]
       }
+  },
+  created () {
+      this.getfollows()
+  },
+  methods: {
+      others(uid){
+      this.$router.push({path: "/community/others",query:{my:false,uid:uid}})
+    },
+    getfollows(){
+        this.$http.post('/api/focus',{uid:this.uid},{emulateJSON:true})
+        .then(res=>{
+            this.items=Object.assign(res.body);
+        })
+    },
+    deletefocus(uuid){
+    this.$http.post('/api/deleteFocus',{uid:this.uid,uuid:uuid},{emulateJSON:true})
+    .then(res=>{
+        this.getfollows()
+    })
+    }
   },
 };
 </script>
 
 <style>
-
-.focus-title{
+.follows{
+    height: auto;
+    min-height: 300px;
+}
+.follows-title{
     display: block;
     margin-left: 50px;
     margin-top: 15px;
     color: #85888a;
 }
 
-.focus-col{
+.follows-col{
     margin: 15px 10px 15px 40px;
 }
 .card-bg{
@@ -54,57 +71,58 @@ export default {
     width: 100%;
     height: 100px;
 }
-.focus-ul{
+.follows-ul{
     list-style: none;
     margin: 0 0 0 10px;
     padding: 0;
     height: 60px;
 }
-.focus-tx{
+.follows-tx{
     width: 80px;
     height: 80px;
     position: relative;
     top: -40px;
 }
-.focus-tx img{
+.follows-tx img{
     border-radius: 50%;
     width: 100%;
     height: 100%;
     border: #fff solid 2px;
 }
-.focus-name{
+.follows-name{
     position: relative;
     top: -60px;
     margin-left: 15px;
 }
-.focus-btn{
+.follows-btn{
     position: relative;
     top: -60px;
-    margin-left: 25px;
+    margin-left: 20px;
 }
-.focus-ul li{
+.follows-ul li{
     display: inline-block;
 }
-.focus-ul2{
+.follows-ul2{
     list-style: none;
     margin: 0 0 0 20px;
     padding: 0;
 }
-.focus-ul2 li{
+.follows-ul2 li{
     display: inline;
     font-size: 14px;
     color: #85888a;
 }
-.focus-space::before{
+.follows-space::before{
     content: "/";
   color: #e0e0e0;
   font-size: 14px;
   margin: 0 10px;
 }
-.focus-userintr{
+.follows-userintr{
     display: block;
     margin:10px 0 15px 15px; 
     font-size: 14px;
     color: #85888a;
 }
 </style>
+

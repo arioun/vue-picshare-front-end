@@ -17,8 +17,8 @@ import mywork from './components/community/mywork.vue'
 import mylike from './components/community/like.vue'
 import collection from './components/community/collection.vue'
 import myalbum from './components/community/album.vue'
-import focus from './components/community/focus.vue'
 import follows from './components/community/follows.vue'
+import fans from './components/community/fans.vue'
 import albumdetail from './components/community/albumdetail.vue'
 
 import notice from './components/notice/index.vue'
@@ -74,14 +74,6 @@ export default new Router({
       {
         path: 'album/detail',
         component: albumdetail
-      },
-      {
-        path: 'focus',
-        component: focus,
-      },
-      {
-        path: 'follows',
-        component: follows,
       }
     ]
     },
@@ -129,12 +121,12 @@ export default new Router({
               component: albumdetail
             },
             {
-              path: 'focus',
-              component: focus,
-            },
-            {
               path: 'follows',
               component: follows,
+            },
+            {
+              path: 'fans',
+              component: fans,
             }
           ]
         },

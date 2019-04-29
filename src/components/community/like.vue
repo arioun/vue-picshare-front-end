@@ -31,7 +31,7 @@
           <img :src="useritem.head_image" @click="others(diaitem.uid)">
         </div>
         <div class="like-diahead-name" @click="others(diaitem.uid)">{{useritem.username?useritem.username:'注册用户'}}</div>
-        <el-button size="medium" class="like-diahead-btn" type="success">关注</el-button>
+        <el-button size="mini" class="like-diahead-btn" type="success" @click="afollow(diaitem.uid)">关注</el-button>
       </div>
       <div class="like-dia-cont">
         <img :src="diaitem.position">
@@ -87,6 +87,26 @@ export default {
     }
   },
   methods: {
+    afollow(uuid){
+        this.$http.post('/api/addFocus',{uid:this.uid,uuid:uuid},{emulateJSON:true})
+        .then(res=>{
+          console.log(res);
+          
+            if (res.body.message=="关注成功") {
+          this.$message({
+              message: "关注成功",
+              type: "success",
+              customClass: "zIndex"
+            });
+        }else{
+          this.$message({
+              message: "您已关注",
+              type: "warning",
+              customClass: "zIndex"
+            });
+        }
+        })
+      },
     others(uid){
       this.$router.push({path: "/community/others",query:{my:false,uid:uid}})
     },

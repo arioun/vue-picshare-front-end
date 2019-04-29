@@ -38,7 +38,7 @@
           <span class="iwhite">发布</span>
         </el-col>
         <el-col :span="1" class="iel-col ibtn cfabu">
-          <router-link to='publish'><el-button icon="el-icon-arrow-right "></el-button></router-link>
+            <el-button icon="el-icon-arrow-right" @click="fabu"></el-button>
         </el-col>
       </el-row>
       <el-row>
@@ -56,11 +56,23 @@ export default {
   data () {
     return {
       abc:'abc',
+      uid:localStorage.getItem('uid')
   }
   },
   methods: {
     showtuku(){
       this.$emit('func','gallery'); 
+    },
+    fabu(){
+      if (this.uid) {
+        this.$router.push({ path: "/publish" });
+      }else{
+        this.$message({
+                message: "您还未登录",
+                type: "warning",
+                customClass: "zIndex"
+              });
+      }
     }
   }
 };

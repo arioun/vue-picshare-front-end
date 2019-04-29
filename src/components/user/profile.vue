@@ -20,13 +20,11 @@
         <el-button class="pr-btn" @click="save">保&nbsp;存</el-button>
       </el-main>
       <el-aside width="300px" class="pr-aside">
-        <img :src="avatarurl" class="pr-tx">
+        <img :src="avatar" class="pr-tx">
         <br>
         <input type="file" @change="changehead($event)" ref="avatarInput" style="display:none;">
         <el-button class="pr-txbtn" size="mini" @click="setavatar">上传图片</el-button>
-        <!--<el-upload action="" :multiple='false' :before-upload="beforeUpload" :on-change="changehead" :auto-upload="true" :limit="1">
-  <el-button size="small" type="primary">点击上传</el-button>
-</el-upload>-->
+        <el-button class="pr-txbtn" size="mini" @click="confirmset">确认修改</el-button>
       </el-aside>
     </el-container>
   </div>
@@ -67,6 +65,7 @@ export default {
         city:'',
         headimg:'',
         multiple:false,
+        avatar:'',
         avatarurl:''
       }
    },
@@ -91,7 +90,7 @@ export default {
        this.desc=result.body[0].introduce;
        this.province=result.body[0].province;
        this.city=result.body[0].city;
-       this.avatarurl=result.body[0].head_image;
+       this.avatar=result.body[0].head_image;
      })
      },
      updataInfo(){
@@ -124,8 +123,14 @@ export default {
       // this.uploadimg();
        this.updataInfo();  
      },
-     changehead(){
-       this.uploadimg()
+     changehead(e){
+      var file = e.target.files[0]
+      var reader = new FileReader()
+      var that = this
+      reader.readAsDataURL(file)
+      reader.onload = function(e) {
+      that.avatar = this.result
+      }
      },
      setavatar(){
        this.$refs.avatarInput.click();
@@ -133,11 +138,33 @@ export default {
     uploadimg(){
       var image = new FormData()
       image.append('file', this.$refs.avatarInput.files[0])
-      /*this.$http.post('/api/upload',image)
+      this.$http.post('/api/upload',image)
       .then(result=>{
         console.log(result);
-        this.avatarurl=result.body.image;
-      })*/
+        this.updateavatar(this.uid,result.body.image)
+      })
+    },
+    updateavatar(uid,position){
+      this.$http.post('/api/headimageUpload',{uid:uid,position:position},{emulateJSON:true})
+      .then(res=>{
+       if (res.body.message=="修改成功") {
+          this.$message({
+              message: "修改头像成功",
+              type: "success",
+              customClass: "zIndex"
+            });
+        }else{
+          this.$message({
+              message: "修改头像失败",
+              type: "danger",
+              customClass: "zIndex"
+            });
+        }
+      })
+    },
+    confirmset(){
+      this.uploadimg()
+      
     }
    }
 };

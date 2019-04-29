@@ -149,7 +149,7 @@ export default {
             });
         }else{
           this.$message({
-              message: "收藏失败",
+              message: "您已经收藏",
               type: "danger",
               customClass: "zIndex"
             });

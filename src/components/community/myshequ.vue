@@ -12,14 +12,10 @@
               <li>
                 <ul class="sq-ul3">
                   <li>
-                    <router-link to="/community/mycommunity/focus">
-                      <el-button type="text" @click="show('focus')">关注&nbsp;{{focus}}</el-button>
-                    </router-link>
+                      <el-button type="text" @click="show('follows');showfollows()">关注&nbsp;{{follows}}</el-button>
                   </li>
                   <li>
-                    <router-link to="/community/mycommunity/follows">
-                      <el-button type="text" @click="show('follows')">粉丝&nbsp;{{follows}}</el-button>
-                    </router-link>
+                      <el-button type="text" @click="show('fans');showfans()">粉丝&nbsp;{{fans}}</el-button>
                   </li>
                 </ul>
               </li>
@@ -105,8 +101,8 @@ export default {
       txurl: "/img/tx6.27d6e020.jpg",
       bgurl:'http://188.131.192.194/head_images/U1wjUvsbuKkrlGwO5K2h339nJ2wf0WdnYBTDxBhf.jpeg',
       introduction: "做个自我介绍吧..",
-      focus: '',
       follows: '',
+      fans: '',
       newalbum: false,
       alname:'',
       status:0,
@@ -126,13 +122,13 @@ export default {
   },
   created() {
     this.getinfo()
-    if (/focus/gi.test(this.comName)) {
+    if (/follows/gi.test(this.comName)) {
       this.flag1 = false;
       this.flag2 = false;
       this.flag3 = false;
       this.flag4 = false;
       this.collection = false;
-    } else if (/follows/gi.test(this.comName)) {
+    } else if (/fans/gi.test(this.comName)) {
       this.flag1 = false;
       this.flag2 = false;
       this.flag3 = false;
@@ -172,13 +168,13 @@ export default {
   },
   watch: {
     $route: function(to) {
-      if (/focus/gi.test(to.path)) {
+      if (/follows/gi.test(to.path)) {
       this.flag1 = false;
       this.flag2 = false;
       this.flag3 = false;
       this.flag4 = false;
       this.collection = false;
-    } else if (/follows/gi.test(to.path)) {
+    } else if (/fans/gi.test(to.path)) {
       this.flag1 = false;
       this.flag2 = false;
       this.flag3 = false;
@@ -228,8 +224,8 @@ export default {
        }
        this.introduction=result.body[0].introduce;
        this.txurl=result.body[0].head_image;
-       this.focus=result.body[0].follow;
-       this.follows=result.body[0].fans;
+       this.follows=result.body[0].follow;
+       this.fans=result.body[0].fans;
      })
     },
     createalbum(){
@@ -268,17 +264,21 @@ export default {
     showcollection(){
       this.$router.push({path: "/community/mycommunity/mycollection",query:{my:true,uid:this.uid}})
     },
+    showfans(){
+      this.$router.push({ path: "/community/mycommunity/fans",query:{fans:this.fans,uid:this.uid} });
+    },
+    showfollows(){
+      this.$router.push({ path: "/community/mycommunity/follows",query:{follows:this.follows,uid:this.uid} });
+    },
     show(data) {
       this.comName = data;
-      if (/focus/gi.test(this.comName)) {
-        this.$router.push({ path: "/community/mycommunity/focus" });
+      if (/follows/gi.test(this.comName)) {
         this.flag1 = false;
         this.flag2 = false;
         this.flag3 = false;
         this.flag4 = false;
         this.collection = false;
-      } else if (/follows/gi.test(this.comName)) {
-        this.$router.push({ path: "/community/mycommunity/follows" });
+      } else if (/fans/gi.test(this.comName)) {
         this.flag1 = false;
         this.flag2 = false;
         this.flag3 = false;
@@ -291,14 +291,12 @@ export default {
         this.flag4 = false;
         this.collection = false;
       } else if (/mylike/gi.test(this.comName)) {
-        this.$router.push({ path: "/community/mycommunity/mylike" });
         this.flag1 = false;
         this.flag2 = true;
         this.flag3 = false;
         this.flag4 = false;
         this.collection = false;
       } else if (/mycollection/gi.test(this.comName)) {
-        this.$router.push({ path: "/community/mycommunity/mycollection" });
         this.flag1 = false;
         this.flag2 = false;
         this.flag3 = false;
