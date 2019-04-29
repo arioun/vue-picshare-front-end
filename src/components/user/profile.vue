@@ -140,7 +140,6 @@ export default {
       image.append('file', this.$refs.avatarInput.files[0])
       this.$http.post('/api/upload',image)
       .then(result=>{
-        console.log(result);
         this.updateavatar(this.uid,result.body.image)
       })
     },
