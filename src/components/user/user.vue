@@ -8,9 +8,9 @@
         <el-col :span="2" :offset="3" :class="['userbtn',flag2?'user-btn-active':'']">
           <el-button type="text" @click="show('/account')">账号和密码</el-button>
         </el-col>
-        <el-col :span="2" :offset="3" :class="['userbtn',flag3?'user-btn-active':'']">
+       <!-- <el-col :span="2" :offset="3" :class="['userbtn',flag3?'user-btn-active':'']">
           <el-button type="text" @click="show('/setting')">设置</el-button>
-        </el-col>
+        </el-col>-->
       </el-row>
     </el-header>
     <el-main class="user-main">

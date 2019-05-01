@@ -44,10 +44,10 @@
       <div class="gz-comments" v-for="(img,i) of item.comment" :key="i">
         <el-row>
           <el-col :span="2" class="gz-follow-tx">
-            <img :src="img.send_head_image" >
+            <img :src="img.from_head_image" >
           </el-col>
           <el-col :span="2" class="gz-follow-name">
-            <p>{{img.send_username?img.send_username:'注册用户'}}</p>
+            <p>{{img.from_username?img.from_username:'注册用户'}}</p>
           </el-col>
         </el-row>
         <el-row class="gz-follow-comment">
@@ -131,6 +131,11 @@ export default {
       this.$http.post('/api/pictureLike',{uid:this.uid,pid:pid})
       .then(res=>{
         if (res.body.message=='点赞成功') {
+          this.$message({
+              message: "点赞成功",
+              type: "success",
+              customClass: "zIndex"
+            })
           this.getdata()
         }else{
           this.$message({

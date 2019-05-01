@@ -6,7 +6,7 @@
        <div class="al-two" v-if="item.num==0">
           <div class="al-one" :style="{backgroundImage:'url('+bgurl+')'}" @click="detail(item.gid)"></div>
         </div>
-        <div class="al-two" v-else-if="item.num<1">
+        <div class="al-two" v-else-if="item.num==1">
           <div class="al-one" :style="{backgroundImage:'url('+item.list[0].position+')'}" @click="detail(item.gid)"></div>
         </div>
         <div class="al-two" v-else-if="item.num>1" :style="{backgroundImage:'url('+item.list[1].position+')'}">
@@ -27,7 +27,7 @@
        <div class="al-two" v-if="item.num==0">
           <div class="al-one" :style="{backgroundImage:'url('+bgurl+')'}" @click="detail(item.gid)"></div>
         </div>
-        <div class="al-two" v-else-if="item.num<1">
+        <div class="al-two" v-else-if="item.num==1">
           <div class="al-one" :style="{backgroundImage:'url('+item.list[0].position+')'}" @click="detail(item.gid)"></div>
         </div>
         <div class="al-two" v-else-if="item.num>1" :style="{backgroundImage:'url('+item.list[1].position+')'}">
@@ -94,6 +94,8 @@ export default {
      getalbum(){
       this.$http.post('/api/galleryList',{uid:this.uid},{emulateJSON:true})
       .then(res=>{
+        console.log(res);
+        
         this.datalist=Object.assign(res.body);
       })
     },

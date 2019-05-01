@@ -16,7 +16,7 @@
       <el-col :lg="2" :xs="2" :sm="2" :md="2" :xl="2" :class="['hel-col',flag3?'active-fb':'']">
         <el-button type="text" class="hbtn" @click="show('/publish')">发布作品</el-button>
       </el-col>
-      <el-col :xs="2" :sm="8" :md="9" :lg="11" :xl="13">&nbsp;</el-col>
+      <el-col :xs="2" :sm="8" :md="10" :lg="11" :xl="12">&nbsp;</el-col>
       <el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1" class="hbtn1 hel-col">
         <img src="../../assets/user.png" class="huser">
       </el-col>

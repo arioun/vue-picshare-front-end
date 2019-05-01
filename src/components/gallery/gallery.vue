@@ -11,18 +11,18 @@
     </div>
     <div class="gmain">
       <el-row type="flex" justify="center">
-        <el-col :span="1" :offset="0" class="gel-col2">
+        <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="1" class="gel-col2">
           <img src="../../assets/dian.png">
         </el-col>
-        <el-col :span="4" class="gel-col2">
+        <el-col :xs="9" :sm="7" :md="6" :lg="6" :xl="4" class="gel-col2">
           <h1>热门专题</h1>
         </el-col>
-        <el-col :span="1" :offset="0" class="gel-col2">
+        <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="1" class="gel-col2">
           <img src="../../assets/dian.png">
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">
-        <el-col :span="4" :offset="0" class="gel-col3">
+        <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4" class="gel-col3">
           <h1>THEME</h1>
         </el-col>
       </el-row>
@@ -214,7 +214,7 @@ export default {
   background-size: cover;
 }
 .gel-col {
-  padding-top: 20%;
+  padding-top: 15%;
 }
 .gel-col input {
   height: 50px;

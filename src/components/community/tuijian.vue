@@ -82,7 +82,7 @@ export default {
       return 138 * 0.5 * (document.documentElement.clientWidth /320);
     },
     gutterWidth() {
-      return 9 * 0.5 * (document.documentElement.clientWidth /170);
+      return 9 * 0.5 * (document.documentElement.clientWidth /300);
     }
   },
   methods: {
@@ -148,7 +148,12 @@ export default {
       this.$http.post('/api/pictureLike',{uid:this.uid,pid:pid})
       .then(res=>{
         if (res.body.message=='点赞成功') {
-          this.getData()
+          this.$message({
+              message: "点赞成功",
+              type: "success",
+              customClass: "zIndex"
+            })
+          this.getpicdetail()
         }else{
           this.$message({
               message: "点赞失败",
