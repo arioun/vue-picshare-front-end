@@ -59,7 +59,7 @@
         </div>
         <el-button type="text" v-if="collect" @click="docollect(diaitem.pid)">收藏</el-button>
         <el-button type="text" style="color:#bfbfbf;" v-else @click="cancelcollect(diaitem.pid)">已收藏</el-button>
-        <el-button type="text" @click="downpic(diaitem.position)">下载</el-button>
+        <!--<el-button type="text" @click="downpic(diaitem.position)">下载</el-button>-->
       </el-dialog>
   </div>
 </template>
