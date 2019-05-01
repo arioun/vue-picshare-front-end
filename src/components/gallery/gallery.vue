@@ -175,8 +175,8 @@ export default {
       })
     },
     downpic(url){
-      //this.downloadIamge(url)
-      FileSaver.saveAs(url, "image.jpg");
+      this.downloadIamge(url)
+      //FileSaver.saveAs(url, "image.jpg");
     },
     downloadIamge(imgsrc, name) {
     let image = new Image();

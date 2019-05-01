@@ -7,7 +7,7 @@ module.exports = {
         hotOnly: false,
         proxy: {
             '/api': {
-                target: 'http://188.131.192.194/home',
+                target: 'localhost/home',
                 ws: true,
                 changeOrigin: true,
                 pathRewrite: {
