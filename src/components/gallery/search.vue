@@ -24,7 +24,7 @@
         <div class="dia-cont">
           <img :src="diaitem.position">
         </div>
-        <el-button type="text">下载</el-button>
+        <el-button type="text" @click="docollect(diaitem.pid)">收藏</el-button>
       </el-dialog>
   </div>
 </template>
@@ -33,6 +33,7 @@ export default {
   name: "search",
   data() {
     return {
+      uid:localStorage.getItem('uid'),
       input:this.$route.query.keywords,
       dialogVisible: false,
       diaitem:[],
@@ -58,6 +59,24 @@ export default {
     showdia(item) {
       this.dialogVisible = true;
       this.diaitem = item;
+    },
+    docollect(pid){
+      this.$http.post('/api/pictureCollect',{uid:this.uid,pid:pid},{emulateJSON:true})
+      .then(res=>{
+        if(res.body.message=="收藏成功"){
+          this.$message({
+              message: "收藏成功",
+              type: "success",
+              customClass: "zIndex"
+            });
+        }else{
+          this.$message({
+              message: "您已经收藏",
+              type: "danger",
+              customClass: "zIndex"
+            });
+        }
+      })
     },
   }
 };
