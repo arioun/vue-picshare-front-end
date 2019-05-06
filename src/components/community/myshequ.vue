@@ -64,6 +64,9 @@
             <el-form-item label="相册名称" :label-width="formLabelWidth1">
               <el-input v-model="alname" autocomplete="off"></el-input>
             </el-form-item>
+            <el-form-item label="相册描述" :label-width="formLabelWidth1">
+              <el-input v-model="alinfo" autocomplete="off"></el-input>
+            </el-form-item>
             <el-form-item label="是否公开" :label-width="formLabelWidth2">
               <el-select v-model="status" placeholder="请选择是否公开">
                 <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -105,6 +108,7 @@ export default {
       fans: '',
       newalbum: false,
       alname:'',
+      alinfo:'',
       status:0,
       options:[
         {
@@ -232,7 +236,7 @@ export default {
       this.newalbum=true;
     },
     createsubmit(){
-      this.$http.post('/api/createGallery',{uid:this.uid,gallery_name:this.alname,status:this.status,description:this.alname},{emulateJSON:true})
+      this.$http.post('/api/createGallery',{uid:this.uid,gallery_name:this.alname,status:this.status,description:this.alinfo},{emulateJSON:true})
       .then(res=>{
         if (res.body.message=="创建成功") {
           this.$message({

@@ -42,12 +42,6 @@ export default {
     };
     return {
       uid:localStorage.getItem("uid"),
-      username:'',
-      sex:'',
-      birthday:'',
-      introduce:'',
-      province:'',
-      city:'',
       email: "",
       phone: "",
       emailbtn:false,
@@ -76,25 +70,25 @@ export default {
   },
   methods: {
     getuserinfo(){
-      this.$http.post("/api/basicInfo",{ uid: this.uid },{ emulateJSON: true })
+      this.$http.post("/api/basicInfo",{ uid: this.uid },{ emulateJSON: true})
       .then(result => {
-        this.username=result.body[0].username;
-       this.sex=result.body[0].sex;
-       this.email=result.body[0].email;
-       this.phone=result.body[0].phone;
-       this.birth=result.body[0].birthday;
-       this.introduce=result.body[0].introduce;
-       this.province=result.body[0].province;
-       this.city=result.body[0].city;
-
+        if (result.body[0].email) {
+          this.email=result.body[0].email;
+        }else{
+          this.email='您还未设置邮箱'
+        }
+       if(result.body[0].phone){
+         this.phone=result.body[0].phone;
+       }else{
+         this.phone='您还未设置手机号';
+       }
+       
       });
     },
     saveemail() {
         this.$refs.emailForm.validate((valid) => {
           if (valid) {
-            this.$http.post("/api/updateInfo",{ uid:this.uid, username:this.username,email: this.emailForm.email,phone:this.phone,
-            sex:this.sex,birthday:this.birthday,introduce:this.introduce,
-            province:this.province,city:this.city },{ emulateJSON: true })
+            this.$http.post("/api/updateEmail",{ uid:this.uid,email: this.emailForm.email},{ emulateJSON: true })
         .then(res => {
           if (res.body.message=="编辑成功") {
           this.$message({
@@ -121,9 +115,7 @@ export default {
     savephone() {
         this.$refs.phoneForm.validate((valid) => {
         if(valid){
-        this.$http.post("/api/updateInfo",{ uid:this.uid, username:this.username,email: this.email,phone:this.phoneForm.phone,
-          sex:this.sex,birthday:this.birthday,introduce:this.introduce,province:this.province,city:this.city 
-        },{ emulateJSON: true })
+        this.$http.post("/api/updatePhone",{ uid:this.uid, phone:this.phoneForm.phone},{ emulateJSON: true })
         .then(res => {
           if (res.body.message=="编辑成功") {
           this.$message({

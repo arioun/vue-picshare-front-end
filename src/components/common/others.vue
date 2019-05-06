@@ -178,7 +178,7 @@ export default {
        this.introduction=result.body[0].introduce;
        this.txurl=result.body[0].head_image;
        this.fans=result.body[0].fans;
-       this.follows=result.body[0].follows;
+       this.follows=result.body[0].follow;
      })
     },
     showalbum(){
@@ -285,6 +285,7 @@ export default {
   padding: 0;
 }
 .other-name {
+  
   font-size: 1.5rem;
   font-weight: bolder;
   margin-bottom: 15px;

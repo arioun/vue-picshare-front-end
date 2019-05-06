@@ -57,8 +57,6 @@ export default {
           label:'女'
         }
       ],
-        email:'',
-        phone:'',
         birth:'',
         desc:'',
         province:'',
@@ -66,7 +64,8 @@ export default {
         headimg:'',
         multiple:false,
         avatar:'',
-        avatarurl:''
+        avatarurl:'',
+        background:''
       }
    },
    created(){
@@ -84,12 +83,10 @@ export default {
      .then(result=>{
        this.username=result.body[0].username;
        this.sex=result.body[0].sex;
-       this.email=result.body[0].email;
-       this.phone=result.body[0].phone;
-       this.birth=result.body[0].birthday;
        this.desc=result.body[0].introduce;
-       this.province=result.body[0].province;
        this.city=result.body[0].city;
+       this.province=result.body[0].province;
+       this.birth=result.body[0].birthday;
        this.avatar=result.body[0].head_image;
      })
      },
@@ -97,13 +94,13 @@ export default {
        this.$http.post('/api/updateInfo',{uid:this.uid,
        username:this.username,
        sex:this.sex,
-       email:this.email,
-       phone:this.phone,
        birthday:this.birth,
        introduce:this.desc,
        province:this.province,
        city:this.city
        },{emulateJSON:true}).then(res=>{
+         console.log(res);
+         
          if (res.body.message=="编辑成功") {
           this.$message({
               message: "修改成功",

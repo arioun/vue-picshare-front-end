@@ -14,7 +14,7 @@
         </div>
         <ul class="al-ul">
           <li class="al-name">{{item.gallery_name}}</li>
-          <li class="alli-btn"><el-button class="al-btn" icon="el-icon-edit" @click="changeal(item.gid,item.gallery_name,item.status)"></el-button></li>
+          <li class="alli-btn"><el-button class="al-btn" icon="el-icon-edit" @click="changeal(item.gid,item.gallery_name,item.status,item.description)"></el-button></li>
           <li class="al-num">{{item.num}}张</li>
           <li class="al-open" v-if="item.status==0">公开</li>
           <li class="al-open" v-else>私密</li>
@@ -44,6 +44,9 @@
             <el-form-item label="相册名称" :label-width="formLabelWidth1">
               <el-input v-model="albumname" autocomplete="off"></el-input>
             </el-form-item>
+            <el-form-item label="相册描述" :label-width="formLabelWidth1">
+              <el-input v-model="albuminfo" autocomplete="off"></el-input>
+            </el-form-item>
             <el-form-item label="是否公开" :label-width="formLabelWidth2">
               <el-select v-model="status" placeholder="请选择是否公开">
                 <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -70,6 +73,7 @@ export default {
       datalist:[],
       changealbum:false,
       albumname:'',
+      albuminfo:'',
       options:[
         {
           value: 0,
@@ -99,14 +103,15 @@ export default {
         this.datalist=Object.assign(res.body);
       })
     },
-    changeal(gid,name,status){
+    changeal(gid,name,status,desc){
       this.gid=gid;
       this.changealbum=true;
       this.albumname=name;
       this.status=status;
+      this.albuminfo=desc;
     },
     edit(gid){
-      this.$http.post('/api/galleryUpdate',{gid:gid,uid:this.uid,gallery_name:this.albumname,status:this.status},{emulateJSON:true})
+      this.$http.post('/api/galleryUpdate',{gid:gid,uid:this.uid,gallery_name:this.albumname,status:this.status,description:this.albuminfo},{emulateJSON:true})
       .then(res=>{
         if (res.body.message=="修改成功") {
           this.$message({

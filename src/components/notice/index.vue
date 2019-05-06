@@ -1,19 +1,5 @@
 <template>
   <el-container>
-    <el-header>
-        <el-row type="flex" justify="center" class="no-head">
-        <el-col :span="2" :offset="0" :class="['no-btn',flag1?'no-btn-act':'']">
-          <router-link :to="{name:'message'}">
-          <el-button type="text" @click="show('message')">消息</el-button>
-          </router-link>
-        </el-col>
-        <el-col :span="2" :offset="3" :class="['no-btn',flag2?'no-btn-act':'']">
-          <router-link :to="{name:'inform'}">
-          <el-button type="text" @click="show('inform')">通知</el-button>
-          </router-link>
-        </el-col>
-      </el-row>
-    </el-header>
     <el-main class="no-main">
       <router-view></router-view>
     </el-main>
@@ -25,7 +11,7 @@ export default {
   name: "noticeindex",
   data() {
     return {
-      comName:'message',
+      comName:'inform',
       flag1:true,
       flag2:false
     }

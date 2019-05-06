@@ -143,7 +143,7 @@ export default new Router({
       children:[
         {
           path:'/',
-          component:message
+          component:inform
         },
         {
           path:'message',

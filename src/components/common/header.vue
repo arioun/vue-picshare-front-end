@@ -39,12 +39,12 @@
           </el-dropdown>
         </el-col>
       </div>
-      <!--<el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1" class="hbtn2 hel-col">
+      <el-col :lg="1" :xs="1" :sm="1" :md="1" :xl="1" class="hbtn2 hel-col">
         <div
           :class="['huser',flag4?'h-message-btn-open':'h-message-btn-close']"
           @click="show('/notice')"
         ></div>
-      </el-col>-->
+      </el-col>
     </el-row>
 
     <el-dialog :title="dialogtitle" :visible.sync="dialogLogin" width="30%" class="head-dialog">
@@ -435,7 +435,7 @@ export default {
   color: #000;
 }
 .he-username{
-  width:130px;
+  width:88px;
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
