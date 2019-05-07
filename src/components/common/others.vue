@@ -12,10 +12,10 @@
               <li>
                 <ul class="other-ul3">
                   <li>
-                      <el-button type="text">关注&nbsp;{{follows}}</el-button>
+                      <span>关注&nbsp;{{follows}}</span>
                   </li>
                   <li>
-                      <el-button type="text">粉丝&nbsp;{{fans}}</el-button>
+                      <span>粉丝&nbsp;{{fans}}</span>
                   </li>
                   <li>
                       <el-button class="other-gz" size="mini" @click="follow(uid)">关注</el-button>
