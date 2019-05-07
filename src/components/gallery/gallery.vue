@@ -139,7 +139,8 @@ export default {
       })
     },
     docollect(pid){
-      this.$http.post('/api/pictureCollect',{uid:this.uid,pid:pid},{emulateJSON:true})
+      if (this.uid) {
+        this.$http.post('/api/pictureCollect',{uid:this.uid,pid:pid},{emulateJSON:true})
       .then(res=>{
         if(res.body.message=="收藏成功"){
           this.$message({
@@ -155,6 +156,14 @@ export default {
             });
         }
       })
+      } else {
+        this.$message({
+              message: "您还未登录",
+              type: "warning",
+              customClass: "zIndex"
+            });
+      }
+      
     },
     cancelcollect(pid){
       this.$http.post('/api/pictureCollectDelete',{uid:this.uid,pid:pid},{emulateJSON:true})

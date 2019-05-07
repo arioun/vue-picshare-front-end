@@ -6,7 +6,7 @@
       @scroll="scroll">
       <template>
         <div class="cell-item" v-for="img in imgs" :key="img.id">
-          <img :src="img.position" class="tj-img" @click="show(img);getuserinfo(img.uid);getpicdetail(img.pid)">
+          <img :src="img.position" class="tj-img" @click="show(img)">
           <div class="item-body">
             <div class="tj-desc">{{img.description}}</div>
             <el-row type="flex" class="tj-footer">
@@ -147,6 +147,8 @@ export default {
     like(pid){
       this.$http.post('/api/pictureLike',{uid:this.uid,pid:pid})
       .then(res=>{
+        console.log(res);
+        
         if (res.body.message=='点赞成功') {
           this.$message({
               message: "点赞成功",
@@ -164,8 +166,19 @@ export default {
       })
     },
     show(item) {
-      this.dialogVisible = true;
-      this.diaitem = item;
+      if (this.uid) {
+        this.dialogVisible = true;
+        this.diaitem = item;
+        this.getuserinfo(item.uid)
+        this.getpicdetail(item.pid)
+      }else{
+        this.$message({
+              message: "您还未登录",
+              type: "warning",
+              customClass: "zIndex"
+            })
+      }
+      
     }
   }
 };
