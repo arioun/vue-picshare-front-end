@@ -15,5 +15,6 @@ module.exports = {
                 }
             }
         }
-    }
+    },
+    productionSourceMap:false,
 };
