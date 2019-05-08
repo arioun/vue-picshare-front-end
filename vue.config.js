@@ -1,7 +1,7 @@
 module.exports = {
     devServer: {
         open: true,
-        host: '0.0.0.0',
+        host: 'pictureshare.me',
         port: 80,
         https: false,
         hotOnly: false,
