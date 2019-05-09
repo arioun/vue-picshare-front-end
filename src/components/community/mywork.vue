@@ -34,6 +34,7 @@
         <el-button icon="el-icon-gz-heart"></el-button>
           <span v-text="diaitem.like_num"></span>
         </div>
+        <div class="mywork-tag">标签：{{diaitem.type_name}}</div>
           <div class="mywork-dia-tabs">
             <div class="mywork-hot" v-for="com in picdetail.comment" :key="com.cid">
               <div class="mywork-hot-tx">
@@ -232,6 +233,10 @@ export default {
 }
 .mywork-coms-com {
   display: inline-block;
+}
+.mywork-tag{
+  margin-top: 5px;
+  margin-left: 10px;
 }
 </style>
 
