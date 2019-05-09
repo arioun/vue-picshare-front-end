@@ -11,8 +11,8 @@ export default {
   data() {
     return {
       avatarurl: "",
-        description:'科技',
-        tid:'15'
+        description:'猫',
+        tid:'14'
     };
   },
   methods: {

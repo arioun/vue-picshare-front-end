@@ -158,6 +158,7 @@ export default {
     border: #fff solid 2px;
 }
 .fans-name{
+    cursor: pointer;
     position: relative;
     top: -60px;
     margin-left: 15px;
